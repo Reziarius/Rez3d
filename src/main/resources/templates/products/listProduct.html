@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Prodotti</title>
+        <link rel="stylesheet" href="/css/stile.css"/>
+    </head>
+
+    <body>
+        <div><a href="/" src="/images/logo-siw.png" width="50%"></a></div>
+        <h1>Prodotti</h1>
+        <div th:if="${products==null || products.isEmpty()}">Non ci sono prodotti</div>
+        <ul>
+            <li th:each="products : ${products}">
+                <a th:href="@{'/products/' + ${products.id}}" th:text="${product.price}"></a>
+            </li>
+        </ul>
+    </body>
+</html>
