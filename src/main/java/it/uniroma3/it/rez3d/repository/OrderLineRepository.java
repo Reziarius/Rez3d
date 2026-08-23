@@ -1,10 +1,10 @@
 package it.uniroma3.it.rez3d.repository;
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import it.uniroma3.it.rez3d.model.OrderLine;
 @Repository
-public interface OrderLineRepository extends CrudRepository<OrderLine,Long>{
+public interface OrderLineRepository extends JpaRepository<OrderLine,Long>{
     
 }
