@@ -16,11 +16,10 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @NotBlank
+    
     private String name;
-    @NotBlank
     private String surname;
-    @NotBlank
+    
     @Column(nullable = false, unique = true)
     private String email;
 
