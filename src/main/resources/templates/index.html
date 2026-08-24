@@ -1,18 +1,57 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Rez3D - Home</title>
-        <link rel="stylesheet" href="/css/stile.css" />
-    </head>
-    <body>
-        <div style="text-align: right; padding: 10px;">
-            <a href="/login"><button style="padding: 5px 15px; cursor: pointer;">Login</button></a>
-        </div>
-        <h1>Benvenuto in Rez3D!</h1>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rez3D - Home</title>
+    <!-- Font moderno -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/stile.css" />
+</head>
+<body>
 
-        <h3>Esplora un mondo di stampe:</h3>
-        <ul>
-            <li><a href="/products">Lista dei prodotti</a></li>
-        </ul>
-    </body>
+    <!-- Navbar stile "unificata" -->
+    <header class="navbar">
+        <div class="navbar-container">
+            <div class="nav-brand">Rez<span>3D</span></div>
+            <div class="nav-actions">
+            
+                <div th:if="${userDetails}" style="display: flex; gap: 15px; align-items: center;">
+                    <span th:text="${userDetails.username}" style="color:white; font-weight: bold;"></span>
+                    <form th:action="@{/logout}" method="POST" class="form-logout">
+                        <button type="submit" class="btn-logout">Logout</button>
+                    </form>
+                </div>                
+                <div th:unless="${userDetails}">
+                    <a href="/login" class="btn-action">Login</a>
+                </div>
+            
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenitore principale centrato -->
+    <main class="main-container">
+        
+        <!-- Hero Section con effetto Glassmorphism -->
+        <div class="glass-panel text-center hero-section">
+            <h1>Benvenuto in Rez3D!</h1>
+            <p class="description">Esplora un mondo di stampe. Trasformiamo i tuoi modelli digitali (STL, OBJ) in realtà con precisione millimetrica e materiali di alta qualità.</p>
+        </div>
+
+        <h2>Esplora i nostri servizi</h2>
+        
+        <!-- Griglia in stile "Home Card" -->
+        <div class="home-grid">
+            <!-- Card 1 -->
+            <a href="/products" class="home-card">
+                <div class="home-card-icon">🖨️</div>
+                <div class="home-card-title">Lista dei Prodotti</div>
+                <p>Sfoglia il nostro catalogo di modelli pronti per essere stampati in 3D.</p>
+            </a>
+        </div>
+
+    </main>
+
+</body>
 </html>
