@@ -20,6 +20,8 @@ public class User {
     private String name;
     private String surname;
     
+    private String username;
+
     @Column(nullable = false, unique = true)
     private String email;
 
@@ -91,4 +93,18 @@ public class User {
             return false;
         return true;
     }
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public List<Order> getOrders() {
+        return orders;
+    }
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
+
+    
 }
