@@ -40,8 +40,23 @@ a:hover {
     text-decoration: underline;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /* ==========================================================================
-   2. NAVBAR UNIFICATA (Usata in tutte le pagine)
+2. NAVBAR UNIFICATA (Usata in tutte le pagine)
    ========================================================================== */
 header.navbar {
     background-color: rgba(30, 30, 36, 0.95);
@@ -317,3 +332,5 @@ button[type="submit"]:not(.btn-logout):hover {
     border-radius: 6px;
     text-align: center;
 }
+
+
