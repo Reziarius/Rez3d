@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Files</title>
+        <link rel="stylesheet" href="/css/stile.css"/>
+    </head>
+
+    <body>
+        
+        <h1>Files</h1>
+
+        <div th:if="${isAdmin}" style="margin-bottom: 20px;">
+            <a href="/admin/files/new"><button>Crea nuovo file</button></a>
+        </div>
+
+        <div th:if="${files==null || files.isEmpty()}">Non ci sono prodotti</div>
+        <ul>
+            <li th:each="file : ${files}">
+                <a th:href="@{'/files/' + ${file.id}}" th:text="${file.name}">Nome</a>
+                <span th:text="' - €' + ${file.price}"></span>
+            </li> 
+        </ul>
+    </body>
+    
+</html>
