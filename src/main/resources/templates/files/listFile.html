@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>Files</title>
-        <link rel="stylesheet" href="/css/stileScuro.css"/>
-    </head>
 
-    <body>
-        
+<head>
+    <title>Files</title>
+    <link rel="stylesheet" href="/css/stileScuro.css" />
+</head>
+
+<body>
+    <main>
         <h1>Files</h1>
 
         <div th:if="${isAdmin}" style="margin-bottom: 20px;">
@@ -18,8 +19,9 @@
             <li th:each="file : ${files}">
                 <a th:href="@{'/files/' + ${file.id}}" th:text="${file.name}">Nome</a>
                 <span th:text="' - €' + ${file.price}"></span>
-            </li> 
+            </li>
         </ul>
-    </body>
-    
+    </main>
+</body>
+
 </html>

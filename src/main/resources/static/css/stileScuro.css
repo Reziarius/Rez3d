@@ -2,14 +2,14 @@
    RESET E VARIABILI BASE (DARK MODE)
    ========================================================================== */
 :root {
-    --primary-color: #7034a1; /* Viola leggermente più chiaro e luminoso per risaltare sul nero */
+    --primary-color: #7034a1; /* Viola leggermente più chiaro e luminoso */
     --primary-hover: #b388ff;
     --background-color: #121212; /* Sfondo scuro standard */
-    --card-background: #1e1e1e; /* Grigio scuro per le card, per staccare dallo sfondo */
-    --text-color: #e0e0e0; /* Testo chiaro, non bianco puro per non affaticare la vista */
-    --text-muted: #aaaaaa; /* Grigio chiaro per testi secondari e label */
+    --card-background: #1e1e1e; /* Grigio scuro per le card */
+    --text-color: #e0e0e0; /* Testo chiaro */
+    --text-muted: #aaaaaa; /* Grigio chiaro per testi secondari */
     --border-color: #333333; /* Bordi scuri */
-    --hover-bg: #2c2c2c; /* Colore per gli effetti hover (ex whitesmoke) */
+    --hover-bg: #2c2c2c; /* Colore per gli effetti hover */
     --font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     --navbar-height: 70px;
 }
@@ -24,33 +24,30 @@ body {
 }
 
 /* ==========================================================================
-   STRUTTURA PRINCIPALE E LAYOUT
+   STRUTTURA PRINCIPALE E LAYOUT (La centratura universale)
    ========================================================================== */
-/* Container principale: centra il contenuto e lo mantiene leggibile */
-body>div:not(.navbar-container),
-body>h1,
-body>h2,
-body>h3,
-body>form,
-body>p {
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: 20px;
-    padding-right: 20px;
+/* Regola universale: tutte le pagine avranno i contenuti centrati e con spazio ai lati */
+main {
+    max-width: 1000px;  /* Larghezza massima globale per la pagina */
+    margin: 0 auto;     /* Spinge il blocco esattamente al centro dello schermo */
+    padding: 40px 20px; /* Spazio vuoto sopra/sotto e ai lati per non toccare i bordi */
+    width: 100%;        /* Adatta agli schermi piccoli */
+    box-sizing: border-box;
 }
 
-body>ul {
-    max-width: 900px;
-    margin-left: auto;
-    margin-right: auto;
-    width: calc(100% - 40px);
+/* Modificatore specifico per centrare anche VERTICALMENTE il Login */
+main.main-centered {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - var(--navbar-height));
 }
 
 /* Navbar unificata */
 header.navbar {
     background-color: var(--primary-color);
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4); /* Ombra più scura */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -150,7 +147,7 @@ a:hover {
 }
 
 /* ==========================================================================
-   LISTE (Tornei, Squadre, ecc.)
+   LISTE E CARD
    ========================================================================== */
 ul {
     list-style-type: none;
@@ -195,7 +192,7 @@ li span {
 }
 
 /* ==========================================================================
-   FORM, INPUT E BOTTONI
+   FORM, INPUT E BOTTONI (ORA CENTRATI)
    ========================================================================== */
 form:not([style*="inline"]):not(header form) {
     background-color: var(--card-background);
@@ -204,6 +201,12 @@ form:not([style*="inline"]):not(header form) {
     border: 1px solid var(--border-color);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.4);
     margin-bottom: 30px;
+    
+    /* Le aggiunte magiche per centrare e limitare i form "normali" */
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
 }
 
 header form {
@@ -226,7 +229,9 @@ form span {
     color: var(--text-muted);
 }
 
+
 input[type="text"],
+input[type="email"],
 input[type="number"],
 input[type="password"],
 input[type="date"],
@@ -237,7 +242,7 @@ textarea {
     padding: 12px;
     margin: 8px 0 20px 0;
     display: inline-block;
-    background-color: #2a2a2a; /* Input scuri */
+    background-color: #2a2a2a;
     color: var(--text-color);
     border: 1px solid #444;
     border-radius: 8px;
@@ -251,10 +256,9 @@ select:focus,
 textarea:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 5px rgba(157, 78, 221, 0.5); /* Bagliore viola scuro */
+    box-shadow: 0 0 5px rgba(112, 52, 161, 0.5); /* Tonalità aggiornata col tuo viola */
 }
 
-/* Placeholder per input scuri */
 ::placeholder {
     color: #777;
 }
@@ -298,23 +302,6 @@ input[type="submit"]:active,
     background-color: #cc0000 !important;
 }
 
-.btn-danger-link {
-    background-color: transparent !important;
-    color: #ff4d4d !important;
-    border: none !important;
-    padding: 0 !important;
-    font-size: 0.9em !important;
-    text-decoration: underline !important;
-    box-shadow: none !important;
-    display: inline !important;
-    cursor: pointer;
-}
-
-.btn-danger-link:hover {
-    color: #cc0000 !important;
-    background-color: transparent !important;
-}
-
 .back-link {
     display: block;
     text-align: center;
@@ -344,15 +331,6 @@ span[th\:errors],
     margin-top: -15px;
     margin-bottom: 15px;
     font-weight: bold;
-}
-
-/* ==========================================================================
-   IMMAGINI
-   ========================================================================== */
-img {
-    max-width: 100%;
-    height: auto;
-    border-radius: 8px;
 }
 
 /* ==========================================================================
@@ -398,7 +376,6 @@ img {
     font-weight: bold;
 }
 
-/* Stile per Tabelle (Classifica) */
 .styled-table {
     width: 100%;
     border-collapse: collapse;
@@ -435,73 +412,30 @@ img {
     border-bottom: 2px solid var(--primary-color);
 }
 
-.styled-table tbody tr.first-place {
-    font-weight: bold;
-    color: var(--primary-hover);
-    background-color: rgba(157, 78, 221, 0.1) !important;
-}
-
 .styled-table tbody tr:hover {
-    background-color: rgba(157, 78, 221, 0.1);
+    background-color: rgba(112, 52, 161, 0.1);
 }
 
 /* ==========================================================================
-   DETTAGLI RISORSE (Show pages)
+   UTILITY PER LOGIN E AUTH (La card compatta)
    ========================================================================== */
-.details-card {
-    background-color: var(--card-background);
-    border: 1px solid var(--border-color);
-    border-radius: 12px;
-    padding: 30px;
-    margin-bottom: 30px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-    text-align: center;
-}
-
-.details-title {
-    color: var(--primary-color);
-    font-size: 2.5em;
-    margin-top: 0;
-    margin-bottom: 10px;
-    border-bottom: none;
-}
-
-.details-meta {
-    color: var(--text-muted);
-    font-size: 1.1em;
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    flex-wrap: wrap;
-}
-
-.details-meta span {
-    background-color: var(--hover-bg);
-    padding: 5px 15px;
-    border-radius: 20px;
-    border: 1px solid var(--border-color);
-}
-
-.details-card p.description {
-    margin-top: 20px;
-    font-size: 1.1em;
-    color: var(--text-color);
-    text-align: justify;
-}
-
-/* ==========================================================================
-   UTILITY PER LOGIN E AUTH
-   ========================================================================== */
-.auth-card {
-    max-width: 450px !important;
-    margin-top: 50px !important;
+form.auth-card {
+    max-width: 400px !important; /* Limite molto più stretto per il login */
+    margin: 0 auto !important;   /* Lo spinge esattamente in mezzo */
     padding: 40px !important;
+    display: flex;
+    flex-direction: column;
 }
 
-.auth-card h1 {
+form.auth-card h1 {
     text-align: center;
     border-bottom: none;
     margin-top: 0;
+}
+
+form.auth-card button {
+    width: 100%;
+    margin-top: 15px;
 }
 
 .admin-actions {
@@ -512,16 +446,19 @@ img {
     flex-wrap: wrap;
 }
 
-.btn-google {
-    background-color: var(--card-background);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
+.btn-google, .btn-github {
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 10px;
     width: 100%;
     margin-bottom: 10px;
+}
+
+.btn-google {
+    background-color: var(--card-background);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
 }
 
 .btn-google:hover {
@@ -532,24 +469,14 @@ img {
     background-color: #24292e;
     color: white;
     border: 1px solid #24292e;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    width: 100%;
 }
 
 .btn-github:hover {
     background-color: #000000;
 }
 
-.auth-icon {
-    width: 20px;
-    height: 20px;
-}
-
 /* ==========================================================================
-   REACT REVIEWS GLASSMORPHISM UI (Adattato a Dark Mode)
+   REACT REVIEWS GLASSMORPHISM UI
    ========================================================================== */
 .reviews-wrapper {
   margin-top: 2rem;
@@ -563,12 +490,11 @@ img {
   color: var(--primary-color);
 }
 
-/* Glassmorphism Panel */
 .glass-panel {
-  background: rgba(157, 78, 221, 0.08); /* Fondo semi-trasparente violaceo */
+  background: rgba(112, 52, 161, 0.08); /* Adattato al tuo viola */
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(157, 78, 221, 0.15);
+  border: 1px solid rgba(112, 52, 161, 0.15);
   border-radius: 16px;
   padding: 1.5rem;
   margin-bottom: 2rem;
@@ -581,88 +507,13 @@ img {
   box-shadow: 0 12px 40px 0 rgba(0, 0, 0, 0.4);
 }
 
-/* Form Styles */
-.review-form-container {
-  border-top: 4px solid var(--primary-color);
-}
-
-.form-group {
-  margin-bottom: 1.25rem;
-}
-
-.form-group label {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: var(--text-muted);
-  font-size: 0.95rem;
-}
-
-.form-input {
-  width: 100%;
-  padding: 0.75rem 1rem;
-  border-radius: 8px;
-  background: #2a2a2a;
-  border: 1px solid #444;
-  color: var(--text-color);
-  font-size: 1rem;
-  font-family: inherit;
-  transition: all 0.2s ease;
-  box-sizing: border-box;
-}
-
-.form-input:focus {
-  outline: none;
-  border-color: var(--primary-color);
-  box-shadow: 0 0 0 2px rgba(157, 78, 221, 0.2);
-}
-
-/* Button */
-.btn-submit {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background-color: var(--primary-color);
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  font-size: 1rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 4px 15px rgba(157, 78, 221, 0.2);
-}
-
-.btn-submit:hover {
-  background-color: var(--primary-hover);
-  transform: scale(1.02);
-  box-shadow: 0 6px 20px rgba(157, 78, 221, 0.3);
-}
-
-/* Reviews List */
-.reviews-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-}
-
+/* Review elements ... */
 .review-item {
   border-left: 4px solid var(--primary-color);
   padding: 1.25rem;
-  background: var(--card-background); /* Modificato in grigio scuro invece che bianco */
+  background: var(--card-background);
   border-radius: 0 8px 8px 0;
-}
-
-.review-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 0.5rem;
-}
-
-.review-header h4 {
-  margin: 0;
-  font-size: 1.25rem;
-  color: var(--text-color);
+  margin-bottom: 1.25rem;
 }
 
 .review-rating {
@@ -670,59 +521,4 @@ img {
   font-size: 1.2rem;
   text-shadow: 0 0 2px rgba(255, 202, 40, 0.2);
   letter-spacing: 2px;
-}
-
-.review-author {
-  font-size: 0.85rem;
-  color: var(--text-muted);
-  margin-bottom: 1rem;
-}
-
-.review-author strong {
-  color: var(--primary-hover);
-}
-
-.review-text {
-  margin: 0;
-  line-height: 1.6;
-  color: var(--text-color);
-}
-
-.review-actions {
-  margin-top: 1rem;
-  text-align: right;
-}
-
-.btn-delete {
-  background: transparent;
-  color: #ff4d4d;
-  border: 1px solid rgba(255, 77, 77, 0.3);
-  padding: 0.4rem 0.8rem;
-  border-radius: 6px;
-  cursor: pointer;
-  font-size: 0.85rem;
-  transition: all 0.2s ease;
-}
-
-.btn-delete:hover {
-  background: rgba(255, 77, 77, 0.1);
-  border-color: #ff4d4d;
-}
-
-/* Utilities */
-.accent-link {
-  color: var(--primary-color);
-  text-decoration: none;
-  font-weight: 600;
-  transition: color 0.2s ease;
-}
-
-.accent-link:hover {
-  color: var(--primary-hover);
-  text-decoration: underline;
-}
-
-.empty-reviews {
-  color: var(--text-muted);
-  font-style: italic;
 }

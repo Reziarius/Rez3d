@@ -12,9 +12,12 @@ public class RealProduct {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
     private float price;
-    private String scale;
-    private Boolean dipinto;
+    private String size;
+    private Boolean isPainted;
     private int quantity;
+    @ManyToOne
+    private Order order;
+
     @ManyToOne
     private PrintFile file;
     public long getId() {
@@ -29,17 +32,17 @@ public class RealProduct {
     public void setPrice(float price) {
         this.price = price;
     }
-    public String getScale() {
-        return scale;
+    public String getSize() {
+        return size;
     }
-    public void setScale(String scale) {
-        this.scale = scale;
+    public void setSize(String size) {
+        this.size = size;
     }
     public Boolean getDipinto() {
-        return dipinto;
+        return isPainted;
     }
-    public void setDipinto(Boolean dipinto) {
-        this.dipinto = dipinto;
+    public void setDipinto(Boolean isPainted) {
+        this.isPainted = isPainted;
     }
     public int getQuantity() {
         return quantity;
@@ -59,8 +62,8 @@ public class RealProduct {
         int result = 1;
         result = prime * result + (int) (id ^ (id >>> 32));
         result = prime * result + Float.floatToIntBits(price);
-        result = prime * result + ((scale == null) ? 0 : scale.hashCode());
-        result = prime * result + ((dipinto == null) ? 0 : dipinto.hashCode());
+        result = prime * result + ((size == null) ? 0 : size.hashCode());
+        result = prime * result + ((isPainted == null) ? 0 : isPainted.hashCode());
         result = prime * result + quantity;
         result = prime * result + ((file == null) ? 0 : file.hashCode());
         return result;
@@ -78,15 +81,15 @@ public class RealProduct {
             return false;
         if (Float.floatToIntBits(price) != Float.floatToIntBits(other.price))
             return false;
-        if (scale == null) {
-            if (other.scale != null)
+        if (size == null) {
+            if (other.size != null)
                 return false;
-        } else if (!scale.equals(other.scale))
+        } else if (!size.equals(other.size))
             return false;
-        if (dipinto == null) {
-            if (other.dipinto != null)
+        if (isPainted == null) {
+            if (other.isPainted != null)
                 return false;
-        } else if (!dipinto.equals(other.dipinto))
+        } else if (!isPainted.equals(other.isPainted))
             return false;
         if (quantity != other.quantity)
             return false;

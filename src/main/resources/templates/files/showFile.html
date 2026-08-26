@@ -1,42 +1,46 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <title>File</title>
-        <link rel="stylesheet" href="/css/stileScuro.css"/>
-    </head>
 
-    <body>
-    <div th:if="${file}">
-        
-        <h1>Dettagli file</h1>
+<head>
+    <title>File</title>
+    <link rel="stylesheet" href="/css/stileScuro.css" />
+</head>
+
+<body>
+    <main>
+        <div th:if="${file}">
+
+            <h1>Dettagli file</h1>
+            <div>
+                <p th:text="${file.name}">Nome File</p>
+                <strong>Prezzo:</strong>€<span th:text="${file.price}"></span>
+                <p th:text="${file.category}">Categoria file</p>
+                <p th:text="${file.artist}">Artista</p>
+            </div>
+
+            <!--questa parte viene mostrata solo agli admin (edit e delete)-->
+            <div th:if="${isAdmin}" style="margin-bottom: 20px;">
+                <h3>Amministrazione</h3>
+                <a th:href="'/admin/files/' + ${file.id} + '/edit'">Modifica file</a>
+                <br><br>
+                <form th:action="@{'/admin/files/' + ${file.id} + '/delete' }" method="POST" style="display:inline;">
+                    <button type="submit" onclick="return confirm ('Sei sicuro di voler elminare questo file?')">Elimina
+                        File</button>
+                </form>
+            </div>
+
+        </div>
+
+        <div th:unless="${file}">
+            Il file non esiste
+        </div>
+
+
         <div>
-            <p th:text="${file.name}">Nome File</p>
-            <strong>Prezzo:</strong>€<span th:text="${file.price}"></span>
-            <p th:text="${file.category}">Categoria file</p>
-            <p th:text="${file.artist}">Artista</p>
+            <br>
+            <a href="/files">Torna all'elenco dei file</a>
         </div>
-        
-        <!--questa parte viene mostrata solo agli admin (edit e delete)-->
-        <div th:if="${isAdmin}" style="margin-bottom: 20px;">
-            <h3>Amministrazione</h3>
-            <a th:href="'/admin/files/' + ${file.id} + '/edit'">Modifica file</a>
-            <br><br>
-            <form th:action="@{'/admin/files/' + ${file.id} + '/delete' }" method="POST" style="display:inline;">
-                <button type="submit" onclick="return confirm ('Sei sicuro di voler elminare questo file?')">Elimina File</button>
-            </form>
-        </div>
-    
-    </div>
+</body>
+</main>
 
-    <div th:unless="${file}">
-        Il file non esiste
-    </div>
-
-
-    <div>
-        <br>
-        <a href="/files">Torna all'elenco dei file</a>
-    </div>
-    </body>
-    
 </html>
