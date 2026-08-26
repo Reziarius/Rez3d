@@ -11,7 +11,7 @@ public class RealProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
-    private float price;
+    private float finalPrice;
     private String size;
     private Boolean isPainted;
     private int quantity;
@@ -26,11 +26,11 @@ public class RealProduct {
     public void setId(long id) {
         this.id = id;
     }
-    public float getPrice() {
-        return price;
+    public float getFinalPrice() {
+        return finalPrice;
     }
-    public void setPrice(float price) {
-        this.price = price;
+    public void setFinalPrice(float finalPrice) {
+        this.finalPrice = finalPrice;
     }
     public String getSize() {
         return size;
@@ -61,7 +61,7 @@ public class RealProduct {
         final int prime = 31;
         int result = 1;
         result = prime * result + (int) (id ^ (id >>> 32));
-        result = prime * result + Float.floatToIntBits(price);
+        result = prime * result + Float.floatToIntBits(finalPrice);
         result = prime * result + ((size == null) ? 0 : size.hashCode());
         result = prime * result + ((isPainted == null) ? 0 : isPainted.hashCode());
         result = prime * result + quantity;
@@ -79,7 +79,7 @@ public class RealProduct {
         RealProduct other = (RealProduct) obj;
         if (id != other.id)
             return false;
-        if (Float.floatToIntBits(price) != Float.floatToIntBits(other.price))
+        if (Float.floatToIntBits(finalPrice) != Float.floatToIntBits(other.finalPrice))
             return false;
         if (size == null) {
             if (other.size != null)
