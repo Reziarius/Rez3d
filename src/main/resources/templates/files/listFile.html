@@ -19,6 +19,7 @@
             <li th:each="file : ${files}">
                 <a th:href="@{'/files/' + ${file.id}}" th:text="${file.name}">Nome</a>
                 <span th:text="' - €' + ${file.price}"></span>
+                <a th:href="@{/files/{id}/personalizza(id=${file.id})}">Personalizza</a>
             </li>
         </ul>
     </main>

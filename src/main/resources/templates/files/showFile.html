@@ -21,7 +21,7 @@
             <!--questa parte viene mostrata solo agli admin (edit e delete)-->
             <div th:if="${isAdmin}" style="margin-bottom: 20px;">
                 <h3>Amministrazione</h3>
-                <a th:href="'/admin/files/' + ${file.id} + '/edit'">Modifica file</a>
+                <a th:href="@{/admin/files/{id}/edit(id=${file.id})}">Modifica file</a>
                 <br><br>
                 <form th:action="@{'/admin/files/' + ${file.id} + '/delete' }" method="POST" style="display:inline;">
                     <button type="submit" onclick="return confirm ('Sei sicuro di voler elminare questo file?')">Elimina

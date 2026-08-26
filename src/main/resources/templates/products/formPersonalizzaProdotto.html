@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Personalizza modello</title>
+</head>
+
+<body>
+    <main>
+        <h1>Personalizza: <span th:text="${file.name}">Nome Modello</span></h1>
+        <p>Prezzo finale: € <span id="finalPrice" th:text="${file.price}">0.00</span></p>
+
+        <form th:action="@{/files/{id}/personalizza(id=${file.id})}" method="POST" th:object="${product}">
+            <div>
+                <label>Scegli la grandezza</label>
+                <select th:field="*{size}" id="size" onchange="calcolaPrezzo()">
+                    <option value="Piccola">Piccola (Originale)</option>
+                    <option value="Media">Media (+5.00€)</option>
+                    <option value="Grande">Grande (+10.00€)</option>
+                </select>
+            </div>
+
+            <div>
+                <label>Vuoi che lo dipingiamo a mano?</label>
+                <input type="checkbox" th:field="*{dipinto}" id="dipinto" onchange="calcolaPrezzo()">
+            </div>
+
+            <button type="submit">Conferma Personalizzazione</button>
+        </form>
+
+    </main>
+
+    <script th:inline="javascript">
+        function calcolaPrezzo(){
+            let prezzoBase = /*[[${file.price}]]*/ 0.0;
+            let finalPrice = prezzoBase;
+
+            let size = document.getElementById("size").value;
+            let dipinto = document.getElementById("dipinto").checked;
+
+            //calcoli
+            if(size === "Media"){
+                finalPrice += 5.0;
+            } else if (size==="Grande"){
+                finalPrice += 10.0;
+            }
+
+            if(dipinto){
+                finalPrice += 15.0;
+            }
+
+            document.getElementById("finalPrice").innerText = finalPrice.toFixed(2);
+        }
+    </script>
+</body>
+
+</html>

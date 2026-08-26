@@ -13,7 +13,7 @@ public class RealProduct {
     private long id;
     private float finalPrice;
     private String size;
-    private Boolean isPainted;
+    private Boolean dipinto;
     private int quantity;
     @ManyToOne
     private Order order;
@@ -39,10 +39,10 @@ public class RealProduct {
         this.size = size;
     }
     public Boolean getDipinto() {
-        return isPainted;
+        return dipinto;
     }
-    public void setDipinto(Boolean isPainted) {
-        this.isPainted = isPainted;
+    public void setDipinto(Boolean dipinto) {
+        this.dipinto = dipinto;
     }
     public int getQuantity() {
         return quantity;
@@ -63,7 +63,7 @@ public class RealProduct {
         result = prime * result + (int) (id ^ (id >>> 32));
         result = prime * result + Float.floatToIntBits(finalPrice);
         result = prime * result + ((size == null) ? 0 : size.hashCode());
-        result = prime * result + ((isPainted == null) ? 0 : isPainted.hashCode());
+        result = prime * result + ((dipinto == null) ? 0 : dipinto.hashCode());
         result = prime * result + quantity;
         result = prime * result + ((file == null) ? 0 : file.hashCode());
         return result;
@@ -86,10 +86,10 @@ public class RealProduct {
                 return false;
         } else if (!size.equals(other.size))
             return false;
-        if (isPainted == null) {
-            if (other.isPainted != null)
+        if (dipinto == null) {
+            if (other.dipinto != null)
                 return false;
-        } else if (!isPainted.equals(other.isPainted))
+        } else if (!dipinto.equals(other.dipinto))
             return false;
         if (quantity != other.quantity)
             return false;
