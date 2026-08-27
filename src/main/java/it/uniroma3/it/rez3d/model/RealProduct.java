@@ -10,7 +10,7 @@ import jakarta.persistence.ManyToOne;
 public class RealProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     private float finalPrice;
     private String size;
     private Boolean dipinto;
@@ -20,87 +20,74 @@ public class RealProduct {
 
     @ManyToOne
     private PrintFile file;
-    public long getId() {
+
+    public Long getId() {
         return id;
     }
-    public void setId(long id) {
+
+    public void setId(Long id) {
         this.id = id;
     }
+
     public float getFinalPrice() {
         return finalPrice;
     }
+
     public void setFinalPrice(float finalPrice) {
         this.finalPrice = finalPrice;
     }
+
     public String getSize() {
         return size;
     }
+
     public void setSize(String size) {
         this.size = size;
     }
+
     public Boolean getDipinto() {
         return dipinto;
     }
+
     public void setDipinto(Boolean dipinto) {
         this.dipinto = dipinto;
     }
+
     public int getQuantity() {
         return quantity;
     }
+
     public void setQuantity(int quantity) {
         this.quantity = quantity;
     }
+
     public PrintFile getFile() {
         return file;
     }
+
     public void setFile(PrintFile file) {
         this.file = file;
     }
+
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + (int) (id ^ (id >>> 32));
-        result = prime * result + Float.floatToIntBits(finalPrice);
-        result = prime * result + ((size == null) ? 0 : size.hashCode());
-        result = prime * result + ((dipinto == null) ? 0 : dipinto.hashCode());
-        result = prime * result + quantity;
-        result = prime * result + ((file == null) ? 0 : file.hashCode());
-        return result;
+        return (id == null) ? 0 : id.hashCode();
     }
+
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        RealProduct other = (RealProduct) obj;
-        if (id != other.id)
-            return false;
-        if (Float.floatToIntBits(finalPrice) != Float.floatToIntBits(other.finalPrice))
-            return false;
-        if (size == null) {
-            if (other.size != null)
-                return false;
-        } else if (!size.equals(other.size))
-            return false;
-        if (dipinto == null) {
-            if (other.dipinto != null)
-                return false;
-        } else if (!dipinto.equals(other.dipinto))
-            return false;
-        if (quantity != other.quantity)
-            return false;
-        if (file == null) {
-            if (other.file != null)
-                return false;
-        } else if (!file.equals(other.file))
-            return false;
-        return true;
-    }
 
-    
+        if (obj == null || getClass() != obj.getClass())
+            return false;
+
+        RealProduct other = (RealProduct) obj;
+
+        if (id == null || other.id == null)
+            return false;
+
+        return id.equals(other.id);
+    }
 
 }

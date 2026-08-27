@@ -3,35 +3,45 @@
 
 <head>
     <title>Personalizza modello</title>
+    <link rel="stylesheet" href="/css/stileScuro.css">
 </head>
 
 <body>
     <main>
-        <h1>Personalizza: <span th:text="${file.name}">Nome Modello</span></h1>
-        <p>Prezzo finale: € <span id="finalPrice" th:text="${file.price}">0.00</span></p>
+        <div class="customization-wrapper">
 
-        <form th:action="@{/files/{id}/personalizza(id=${file.id})}" method="POST" th:object="${product}">
-            <div>
-                <label>Scegli la grandezza</label>
-                <select th:field="*{size}" id="size" onchange="calcolaPrezzo()">
-                    <option value="Piccola">Piccola (Originale)</option>
-                    <option value="Media">Media (+5.00€)</option>
-                    <option value="Grande">Grande (+10.00€)</option>
-                </select>
+
+            <h1>Personalizza: <span th:text="${file.name}" style="color: var(--text-color);">Nome Modello</span></h1>
+
+            <div class="price-badge">
+                Prezzo finale: € <span id="finalPrice" th:text="${file.price}">0.00</span></p>
             </div>
+            <!--attenzione perchè quando passiamo questo indirizzo occorre fare attenzione, springbotto vede i campi di product ed inizia a riempirli e 
+            nel leggere l'url vede che è presente un parametro di nome "id", che è del printFile, ma ha lo stesso nome del parametro del
+            real product, quindi lo riempirà. Necessario cambio nome -> fileId -->
+            <form th:action="@{/files/{fileId}/personalizza(fileId=${file.id})}" method="POST" th:object="${product}">
 
-            <div>
-                <label>Vuoi che lo dipingiamo a mano?</label>
-                <input type="checkbox" th:field="*{dipinto}" id="dipinto" onchange="calcolaPrezzo()">
-            </div>
+                <div style="margin-bottom:20px;">
+                    <label>Scegli la grandezza</label>
+                    <select th:field="*{size}" id="size" onchange="calcolaPrezzo()">
+                        <option value="Piccola">Piccola (Originale)</option>
+                        <option value="Media">Media (+5.00€)</option>
+                        <option value="Grande">Grande (+10.00€)</option>
+                    </select>
+                </div>
 
-            <button type="submit">Conferma Personalizzazione</button>
-        </form>
+                <div class="checkbox-group">
+                    <input type="checkbox" th:field="*{dipinto}" id="dipinto" onchange="calcolaPrezzo()">
+                    <label>Vuoi che lo dipingiamo a mano?(+15.00€)</label>
+                </div>
 
+                <button type="submit" style="width: 100%;">Conferma Personalizzazione</button>
+            </form>
+        </div>
     </main>
 
     <script th:inline="javascript">
-        function calcolaPrezzo(){
+        function calcolaPrezzo() {
             let prezzoBase = /*[[${file.price}]]*/ 0.0;
             let finalPrice = prezzoBase;
 
@@ -39,13 +49,13 @@
             let dipinto = document.getElementById("dipinto").checked;
 
             //calcoli
-            if(size === "Media"){
+            if (size === "Media") {
                 finalPrice += 5.0;
-            } else if (size==="Grande"){
+            } else if (size === "Grande") {
                 finalPrice += 10.0;
             }
 
-            if(dipinto){
+            if (dipinto) {
                 finalPrice += 15.0;
             }
 

@@ -20,6 +20,7 @@ public class RealProductService {
         this.productRepository = productRepository;
     }
 
+    @Transactional
     public RealProduct creaProdotto(RealProduct product, PrintFile baseFile){
         product.setFile(baseFile);
         float prezzo = baseFile.getPrice();
@@ -47,8 +48,8 @@ public class RealProductService {
     }
 
     @Transactional
-    public RealProduct save(RealProduct file){
-        return productRepository.save(file);
+    public RealProduct save(RealProduct product){
+        return productRepository.save(product);
     }
 
     @Transactional

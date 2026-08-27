@@ -522,3 +522,104 @@ form.auth-card button {
   text-shadow: 0 0 2px rgba(255, 202, 40, 0.2);
   letter-spacing: 2px;
 }
+
+/* ==========================================================================
+   PERSONALIZZAZIONE (Prezzo e Checkbox)
+   ========================================================================== */
+
+/* Badge del Prezzo Finale */
+.price-badge {
+    font-size: 1.2rem;
+    color: #ffffff;
+    font-weight: bold;
+    background: rgba(112, 52, 161, 0.2);
+    border: 1px solid var(--primary-color);
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: inline-block;
+    margin-top: 10px;
+    margin-bottom: 10px;
+
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.price-badge span {
+    color: #ffca28; /* Giallo/Oro per i soldi, stacca benissimo dal viola! */
+    font-size: 1.6rem;
+    line-height: 1;
+    transform: translateY(-1px);
+}
+
+/* Stile Custom per la Checkbox (Perfetta per la Dark Mode) */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 25px;
+    background: rgba(255, 255, 255, 0.03); /* Sfondo leggermente più chiaro per evidenziarla */
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+}
+
+.checkbox-group label {
+    margin-bottom: 0 !important; /* Rimuove il margine inferiore delle label normali */
+    cursor: pointer;
+    font-size: 1rem;
+    color: var(--text-color);
+}
+
+/* Nasconde la checkbox brutta del browser e ne crea una "vuota" */
+input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    background-color: #2a2a2a;
+    margin: 0;
+    width: 1.5em;
+    height: 1.5em;
+    border: 2px solid #444;
+    border-radius: 4px;
+    display: grid;
+    place-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+/* Crea la "spunta" (il check) all'interno, inizialmente rimpicciolita (scale 0) */
+input[type="checkbox"]::before {
+    content: "";
+    width: 0.8em;
+    height: 0.8em;
+    transform: scale(0);
+    transition: 120ms transform ease-in-out;
+    background-color: #121212; /* Colore della spunta */
+    transform-origin: center;
+    /* Questa formula magica (clip-path) disegna fisicamente una V col CSS */
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+/* Quando ci clicchi: si colora di viola */
+input[type="checkbox"]:checked {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+/* Quando ci clicchi: la spunta appare all'improvviso (scale 1) */
+input[type="checkbox"]:checked::before {
+    transform: scale(1);
+}
+
+/* Contenitore invisibile che tiene uniti Titolo, Badge e Form */
+.customization-wrapper {
+    max-width: 550px;
+    margin: 0 auto; /* Centra l'intero blocco nello schermo */
+    width: 100%;
+}
+
+/* Aggiorniamo il form per fargli prendere lo spazio del wrapper */
+.customization-form {
+    max-width: 100% !important; 
+    margin: 0 !important;
+}
