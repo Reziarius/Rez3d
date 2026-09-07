@@ -1,12 +1,19 @@
 package it.uniroma3.it.rez3d.controller;
 
+import java.security.Principal;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 
+import it.uniroma3.it.rez3d.model.Order;
 import it.uniroma3.it.rez3d.model.PrintFile;
 import it.uniroma3.it.rez3d.model.RealProduct;
+import it.uniroma3.it.rez3d.model.User;
+import it.uniroma3.it.rez3d.service.OrderService;
 import it.uniroma3.it.rez3d.service.PrintFileService;
 import it.uniroma3.it.rez3d.service.RealProductService;
+import it.uniroma3.it.rez3d.service.UserService;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,10 +24,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class RealProductController {
     private final RealProductService realProductService;
     private final PrintFileService printFileService;
+    private final UserService userService;
+    private final OrderService orderService;
 
-    public RealProductController(RealProductService realProductService, PrintFileService printFileService) {
+    public RealProductController(RealProductService realProductService, PrintFileService printFileService,UserService userService,OrderService orderService) {
         this.realProductService = realProductService;
         this.printFileService = printFileService;
+        this.userService = userService;
+        this.orderService = orderService;
     }
 
     @GetMapping("files/{id}/personalizza")
@@ -38,17 +49,17 @@ public class RealProductController {
     }
 
     @PostMapping("files/{fileId}/personalizza")
-    public String salvaProdottoPersonalizzato(@PathVariable("fileId") Long fileId, @ModelAttribute("product") RealProduct product) {
-
-        System.out.println("PRODUCT OBJECT = " + product);
-        System.out.println("PRODUCT ID = " + product.getId());
-        System.out.println("PRODUCT CLASS = " + product.getClass());
-
-
+    public String salvaProdottoPersonalizzato(@PathVariable("fileId") Long fileId, 
+                                                @ModelAttribute("product") RealProduct product,
+                                                Principal principal) {
+        
         PrintFile file = printFileService.findById(fileId).get();
-
+        String username = principal.getName();
+        User loggedUser = userService.findByUsername(username);
+        Order carrello = orderService.getOrCreateCart(loggedUser);
+        product.setOrder(carrello);
         realProductService.creaProdotto(product, file);
-        return "redirect:/";
+        return "redirect:/cart";
     }
 
 }

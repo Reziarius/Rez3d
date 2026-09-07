@@ -61,6 +61,16 @@ public class RealProduct {
         this.quantity = quantity;
     }
 
+    
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    
     public PrintFile getFile() {
         return file;
     }
@@ -89,5 +99,6 @@ public class RealProduct {
 
         return id.equals(other.id);
     }
+
 
 }

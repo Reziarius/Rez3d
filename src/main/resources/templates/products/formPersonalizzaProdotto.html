@@ -16,7 +16,7 @@
             <div class="price-badge">
                 Prezzo finale: € <span id="finalPrice" th:text="${file.price}">0.00</span></p>
             </div>
-            <!--attenzione perchè quando passiamo questo indirizzo occorre fare attenzione, springbotto vede i campi di product ed inizia a riempirli e 
+            <!--attenzione perchè quando passiamo questo indirizzo occorre fare attenzione, springboot vede i campi di product ed inizia a riempirli e 
             nel leggere l'url vede che è presente un parametro di nome "id", che è del printFile, ma ha lo stesso nome del parametro del
             real product, quindi lo riempirà. Necessario cambio nome -> fileId -->
             <form th:action="@{/files/{fileId}/personalizza(fileId=${file.id})}" method="POST" th:object="${product}">
