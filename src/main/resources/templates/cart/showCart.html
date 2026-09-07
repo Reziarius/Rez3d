@@ -1,61 +1,90 @@
 <!DOCTYPE html>
-<html>
-<head>
-    <title>Il tuo Carrello</title>
-    <link rel="stylesheet" href="/css/stileScuro.css" />
-</head>
-<body>
-    <main style="max-width: 800px; margin: 0 auto; padding: 20px;">
-        
-        <h1>Il tuo Carrello</h1>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 
-        <!-- Mostriamo un messaggio se il carrello è vuoto -->
-        <div th:if="${carrello.items == null || carrello.items.isEmpty()}">
-            <p>Il tuo carrello è vuoto. Inizia a personalizzare i nostri modelli!</p>
-            <a href="/files">Torna al catalogo</a>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Il tuo Carrello - Rez3D</title>
+    <!-- Usa il tuo file CSS principale -->
+    <link rel="stylesheet" href="/css/stileAma.css" />
+</head>
+
+<body>
+    <!-- Navbar unificata -->
+    <header th:replace="~{fragments/navbar :: navbar}"></header>
+
+    <main class="cart-container">
+
+        <h1 style="border-bottom: none; margin-bottom: 30px;">Carrello <span th:text="${carrello.items.size()}"></span>articoli</h1>
+
+        <!-- Messaggio carrello vuoto -->
+        <div th:if="${carrello.items == null || carrello.items.isEmpty()}" class="empty-cart">
+            <div style="font-size: 3rem; margin-bottom: 10px;">🛒</div>
+            <h2>Il tuo carrello è vuoto</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px;">Inizia a personalizzare i nostri modelli!</p>
+            <a href="/files" class="btn-action">Vai al Catalogo</a>
         </div>
 
-        <!-- Se ci sono prodotti, mostriamo la lista -->
-        <div th:if="${carrello.getItems() != null || !carrello.getItems().isEmpty()}">
+        <!-- Lista prodotti (Stile Amazon) -->
+        <div th:if="${carrello.getItems() != null && !carrello.getItems().isEmpty()}">
             
-            <div th:each="line : ${lines}" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 8px;">
+            <div class="cart-list">
                 
-                <!-- Dettagli del prodotto di base -->
-                <h2 th:text="${line.getProduct().getFile().name}">Nome File Base</h2>
-                <p>Quantità: <span th:text="${line.quantity}"></span></p>
-                
-                <!-- Mostriamo le opzioni di personalizzazione scelte -->
-                <ul>
-                    <li>Dimensione: <strong th:text="${line.getProduct().getSize()}">Media</strong></li>
-                    <li>
-                        Finitura: 
-                        <strong th:if="${line.getProduct().getDipinto()}">Dipinto a mano</strong>
-                        <strong th:unless="${line.getProduct().getDipinto()}">Stampa grezza</strong>
-                    </li>
-                </ul>
+                <!-- Singolo elemento del carrello -->
+                <div th:each="line : ${lines}" class="cart-item">
+                    
+                    <!-- 1. DETTAGLI A SINISTRA -->
+                    <div class="cart-item-details">
+                        <h3 th:text="${line.getProduct().getFile().name}">Nome Modello</h3>
+                        
+                        <p class="item-specs">
+                            <span>Dimensione: <strong th:text="${line.getProduct().getSize()}">Media</strong></span>
+                            <span class="separator">•</span>
+                            <span>Finitura: 
+                                <strong th:if="${line.getProduct().getDipinto()}">Dipinto a mano</strong>
+                                <strong th:unless="${line.getProduct().getDipinto()}">Stampa grezza</strong>
+                            </span>
+                        </p>
+                    </div>
 
-                <!-- Prezzo di questo singolo pezzo -->
-                <p>Prezzo: € <span th:text="${line.getProduct().getFinalPrice()}">0.00</span></p>
-                <p>Prezzo totale riga: €<span th:text="${line.quantity * line.getProduct().getFinalPrice()}"></span></p>
-                
-                <!-- Tasto per rimuovere il prodotto (lo implementeremo dopo) -->
-                <!-- <a th:href="@{/cart/remove/{id}(id=${prodotto.id})}">Rimuovi</a> -->
+                    <!-- 2. QUANTITÀ AL CENTRO -->
+                    <div class="cart-item-qty">
+                        <form th:action="@{/cart/update/{id}(id=${line.id})}" method="POST" class="form-inline">
+                            <input type="number" name="quantity" th:value="${line.quantity}" min="1" class="qty-input">
+                            <button type="submit" class="btn-update">Aggiorna</button>
+                        </form>
+                    </div>
+
+                    <!-- 3. PREZZI ED ELIMINAZIONE A DESTRA -->
+                    <div class="cart-item-actions">
+                        <div class="price-block">
+                            <!-- Prezzo unitario in piccolo -->
+                            <span class="unit-price">€ <span th:text="${line.getProduct().getFinalPrice()}">0.00</span> / pz</span>
+                            <!-- Prezzo totale riga in grande -->
+                            <span class="row-total">€ <span th:text="${line.quantity * line.getProduct().getFinalPrice()}">0.00</span></span>
+                        </div>
+                        
+                        <!-- Bottone elimina stile link (Discreto, stile Amazon) -->
+                        <form th:action="@{/cart/remove/{id}(id=${line.id})}" method="POST" class="form-inline">
+                            <button type="submit" class="btn-danger-link">Rimuovi</button>
+                        </form>
+                    </div>
+
+                </div>
             </div>
 
-            <!-- IL TOTALE E IL CHECKOUT -->
-            <hr>
-            <div style="text-align: right;">
-                <h3>Totale da pagare: € <span th:text="${totale}">0.00</span></h3>
+            <!-- RIEPILOGO FINALE (CHECKOUT) -->
+            <div class="cart-checkout-section">
+                <div class="cart-total">
+                    Totale provvisorio: <span class="total-amount">€ <span th:text="${totale}">0.00</span></span>
+                </div>
                 
-                <form th:action="@{/checkout}" method="POST">
-                    <button type="submit" style="padding: 10px 20px; font-size: 18px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">
-                        Procedi all'acquisto
-                    </button>
+                <form th:action="@{/checkout}" method="POST" class="form-inline">
+                    <button type="submit" class="btn-checkout">Procedi all'ordine</button>
                 </form>
             </div>
 
         </div>
-
     </main>
 </body>
 </html>

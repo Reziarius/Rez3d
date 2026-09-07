@@ -6,11 +6,13 @@
     <title>Rez3D - Home</title>
     <!-- Font moderno -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="/css/stileScuro.css" />
+    <link rel="stylesheet" href="/css/stileAma.css" />
 </head>
-<body>
 
-    <!-- Navbar stile "unificata" -->
+<body>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Navbar stile "unificata" 
     <header class="navbar">
         <div class="navbar-container">
             <div class="nav-brand">Rez<span>3D</span></div>
@@ -30,6 +32,7 @@
             </div>
         </div>
     </header>
+    -->
 
     <!-- Contenitore principale centrato -->
     <main class="main-container">
