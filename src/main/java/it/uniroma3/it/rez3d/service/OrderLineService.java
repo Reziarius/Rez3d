@@ -2,12 +2,17 @@ package it.uniroma3.it.rez3d.service;
 
 import org.springframework.stereotype.Service;
 
+import it.uniroma3.it.rez3d.controller.OrderLineController;
 import it.uniroma3.it.rez3d.model.OrderLine;
 import it.uniroma3.it.rez3d.repository.OrderLineRepository;
 
 @Service
 public class OrderLineService{
     private OrderLineRepository orderLineRepository;
+
+    public OrderLineService(OrderLineRepository orderLineRepository){
+        this.orderLineRepository = orderLineRepository;
+    }
 
     public Iterable<OrderLine> findAll(){
         return this.orderLineRepository.findAll();

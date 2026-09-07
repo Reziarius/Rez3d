@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Il tuo Carrello</title>
+    <link rel="stylesheet" href="/css/stileScuro.css" />
+</head>
+<body>
+    <main style="max-width: 800px; margin: 0 auto; padding: 20px;">
+        
+        <h1>Il tuo Carrello</h1>
+
+        <!-- Mostriamo un messaggio se il carrello è vuoto -->
+        <div th:if="${carrello.items == null || carrello.items.isEmpty()}">
+            <p>Il tuo carrello è vuoto. Inizia a personalizzare i nostri modelli!</p>
+            <a href="/files">Torna al catalogo</a>
+        </div>
+
+        <!-- Se ci sono prodotti, mostriamo la lista -->
+        <div th:if="${carrello.getItems() != null || !carrello.getItems().isEmpty()}">
+            
+            <div th:each="line : ${lines}" style="border: 1px solid #ccc; padding: 15px; margin-bottom: 15px; border-radius: 8px;">
+                
+                <!-- Dettagli del prodotto di base -->
+                <h2 th:text="${line.getProduct().getFile().name}">Nome File Base</h2>
+                <p>Quantità: <span th:text="${line.quantity}"></span></p>
+                
+                <!-- Mostriamo le opzioni di personalizzazione scelte -->
+                <ul>
+                    <li>Dimensione: <strong th:text="${line.getProduct().getSize()}">Media</strong></li>
+                    <li>
+                        Finitura: 
+                        <strong th:if="${line.getProduct().getDipinto()}">Dipinto a mano</strong>
+                        <strong th:unless="${line.getProduct().getDipinto()}">Stampa grezza</strong>
+                    </li>
+                </ul>
+
+                <!-- Prezzo di questo singolo pezzo -->
+                <p>Prezzo: € <span th:text="${line.getProduct().getFinalPrice()}">0.00</span></p>
+                <p>Prezzo totale riga: €<span th:text="${line.quantity * line.getProduct().getFinalPrice()}"></span></p>
+                
+                <!-- Tasto per rimuovere il prodotto (lo implementeremo dopo) -->
+                <!-- <a th:href="@{/cart/remove/{id}(id=${prodotto.id})}">Rimuovi</a> -->
+            </div>
+
+            <!-- IL TOTALE E IL CHECKOUT -->
+            <hr>
+            <div style="text-align: right;">
+                <h3>Totale da pagare: € <span th:text="${totale}">0.00</span></h3>
+                
+                <form th:action="@{/checkout}" method="POST">
+                    <button type="submit" style="padding: 10px 20px; font-size: 18px; background-color: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer;">
+                        Procedi all'acquisto
+                    </button>
+                </form>
+            </div>
+
+        </div>
+
+    </main>
+</body>
+</html>

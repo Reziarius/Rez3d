@@ -17,9 +17,9 @@ public class RealProduct {
     private int quantity;
     @ManyToOne
     private Order order;
-
     @ManyToOne
     private PrintFile file;
+    
 
     public Long getId() {
         return id;

@@ -50,6 +50,8 @@ public class SecurityConfiguration {
                 .requestMatchers("/css/**","/images/**","/register","/login").permitAll()
                 // 1. Diciamo a Spring che l'area ADMIN è blindata
                 .requestMatchers("/admin/**").authenticated() 
+
+                .requestMatchers("/cart","/files/*/personalizza").authenticated() 
                 
                 // 2. Diciamo a Spring che TUTTO il resto del sito è PUBBLICO!
                 .anyRequest().permitAll() 

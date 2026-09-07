@@ -12,11 +12,46 @@ public class OrderLine {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private int quantity;
-
-    @ManyToOne
-    private RealProduct product;
-
     @ManyToOne
     private Order order;
+    
+    @ManyToOne
+    private RealProduct product;
+    
+    
+    private int quantity = 1;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public RealProduct getProduct() {
+        return product;
+    }
+
+    public void setProduct(RealProduct product) {
+        this.product = product;
+    }
+
+    public Order getOrder() {
+        return order;
+    }
+
+    public void setOrder(Order order) {
+        this.order = order;
+    }
+
+    
 }

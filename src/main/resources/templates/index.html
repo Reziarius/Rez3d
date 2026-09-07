@@ -18,6 +18,7 @@
             
                 <div th:if="${userDetails}" style="display: flex; gap: 15px; align-items: center;">
                     <span th:text="${userDetails.username}" style="color:white; font-weight: bold;"></span>
+                    <a href="/cart" style="font-size: 1.2em; text-decoration: none;">🛒 Carrello</a>
                     <form th:action="@{/logout}" method="POST" class="form-logout">
                         <button type="submit" class="btn-logout">Logout</button>
                     </form>
