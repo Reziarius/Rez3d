@@ -23,10 +23,17 @@
                 <!-- VISIBILE SOLO SE LOGGATO (Authenticated) -->
                 <div sec:authorize="isAuthenticated()" style="display: flex; gap: 15px; align-items: center;">
                     
-                    <!-- Stampa automaticamente l'username dell'utente -->
-                    <span style="color: var(--text-muted);">Ciao, <strong sec:authentication="name" style="color: white;">Utente</strong>!</span>
+                    <!-- BLOCCO STORICO ORDINI (Stile Amazon) -->
+                    <a th:href="@{/storico}" style="display: flex; flex-direction: column; text-decoration: none; line-height: 1.2;">
+                        <span style="color: var(--text-muted); font-size: 0.85em;">Ciao, <span sec:authentication="name" style="color: white; font-weight: bold;">Utente</span></span>
+                        <span style="color: white; font-weight: bold; font-size: 1em;">Resi e Ordini</span>
+                    </a>
                     
-                    <a th:href="@{/cart}">🛒 Carrello</a>
+                    <!-- Carrello -->
+                    <a th:href="@{/cart}" style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: white; font-weight: bold;">
+                        <span style="font-size: 1.3em;">🛒</span>
+                        <span>Carrello</span>
+                    </a>
                     
                     <!-- Form Logout con la classe .form-logout e il bottone con .btn-logout -->
                     <form th:action="@{/logout}" method="post" class="form-logout">

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 import it.uniroma3.it.rez3d.model.Order;
 import it.uniroma3.it.rez3d.model.OrderLine;
+import it.uniroma3.it.rez3d.model.OrderState;
 import it.uniroma3.it.rez3d.model.User;
 import it.uniroma3.it.rez3d.service.OrderService;
 import it.uniroma3.it.rez3d.service.UserService;
@@ -73,5 +74,36 @@ public class CartController{
         orderLineService.deleteById(lineId);
         return "redirect:/cart";
     }
+
+    @PostMapping("/checkout")
+    public String elaboraCheckout(@RequestParam("indirizzo") String indirizzo,@RequestParam("citta") String citta, @RequestParam("cap") String cap, Principal principal) {
+        //TODO: process POST request
+        String username = principal.getName();
+        User utente = userService.findByUsername(username);
+        Order carrello = orderService.getOrCreateCart(utente);
+        
+        if(carrello.getItems() == null || carrello.getItems().isEmpty()){
+            return "redirect:/cart?error=empty";
+        }
+
+        //salviamo dati di spedizione nell'ordine
+        carrello.setIndirizzoSpedizione(indirizzo);
+        carrello.setCitta(citta);
+        carrello.setCap(cap);
+
+        //cambio STATO: il carrello diventa un ordine in lavorazione
+        carrello.setState(OrderState.PENDING);
+
+        //salviamo l'ordine definitivo
+        orderService.save(carrello);
+        return "redirect:/successOrder";
+    }
+
+    @GetMapping("/successOrder")
+    public String ordineCompletato() {
+        return "cart/success";
+    }
+    
+    
     
 }

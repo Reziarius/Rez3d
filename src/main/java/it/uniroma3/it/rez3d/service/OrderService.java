@@ -1,6 +1,7 @@
 package it.uniroma3.it.rez3d.service;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +31,6 @@ public class OrderService {
         return orderRepository.save(newCart);
     }
 
-    
-
     public Iterable<Order> findAll(){
         return this.orderRepository.findAll();
     }
@@ -46,5 +45,11 @@ public class OrderService {
 
     public void deleteById(Long id){
         this.orderRepository.deleteById(id);
+    }
+
+    @Transactional 
+    public List<Order> findByUser(User user){
+        List<Order> result = this.orderRepository.findByUser(user);
+        return result;
     }
 }

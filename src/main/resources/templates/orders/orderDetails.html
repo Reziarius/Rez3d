@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Dettaglio Ordine</title>
+    <link rel="stylesheet" href="/css/stileAma.css">
+</head>
+<body style="font-family: sans-serif; background-color: #f9f9f9; margin: 0;">
+
+    <!-- La tua Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main style="max-width: 800px; margin: 40px auto; background: white; padding: 30px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1);">
+        
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #eee; padding-bottom: 15px; margin-bottom: 20px;">
+            <h2>Ordine #<span th:text="${ordine.id}"></span></h2>
+            <span style="padding: 8px 15px; background-color: #e9ecef; border-radius: 20px; font-weight: bold;" th:text="${ordine.state}">Stato</span>
+        </div>
+
+        <div style="margin-bottom: 30px;">
+            <h3>Dati di Spedizione</h3>
+            <p style="margin: 5px 0;"><strong>Indirizzo:</strong> <span th:text="${ordine.indirizzoSpedizione}"></span></p>
+            <p style="margin: 5px 0;"><strong>Città:</strong> <span th:text="${ordine.citta}"></span></p>
+            <p style="margin: 5px 0;"><strong>CAP:</strong> <span th:text="${ordine.cap}"></span></p>
+        </div>
+
+        <h3>Articoli Acquistati</h3>
+        
+        <!-- Lista dei prodotti -->
+        <div th:each="line : ${ordine.items}" style="border: 1px solid #eee; padding: 15px; margin-bottom: 15px; border-radius: 5px; display: flex; justify-content: space-between; align-items: center;">
+            
+            <div>
+                <h4 style="margin: 0 0 5px 0;" th:text="${line.product.file.name}">Nome File</h4>
+                <p style="margin: 0; color: #666; font-size: 14px;">
+                    Taglia: <span th:text="${line.product.size}"></span> | 
+                    Finitura: <span th:text="${line.product.dipinto ? 'Dipinto' : 'Grezzo'}"></span>
+                </p>
+            </div>
+            
+            <div style="text-align: right;">
+                <p style="margin: 0;">Quantità: <strong th:text="${line.quantity}"></strong></p>
+                <p style="margin: 0; font-weight: bold; color: #28a745;">€ <span th:text="${line.quantity * line.product.finalPrice}"></span></p>
+            </div>
+            
+        </div>
+
+        <div style="text-align: right; border-top: 2px solid #eee; padding-top: 20px; margin-top: 20px;">
+            <h3>Totale Pagato: € <span th:text="${totale}">0.00</span></h3>
+        </div>
+
+        <div style="margin-top: 30px;">
+            <a th:href="@{/storico}" style="color: #007bff; text-decoration: none;">&larr; Torna allo storico ordini</a>
+        </div>
+
+    </main>
+
+</body>
+</html>

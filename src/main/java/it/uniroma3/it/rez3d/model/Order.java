@@ -24,6 +24,34 @@ public class Order {
     
     private LocalDate date;
 
+    private String indirizzoSpedizione;
+    private String citta;
+    private String cap;
+
+    public String getIndirizzoSpedizione() {
+        return indirizzoSpedizione;
+    }
+
+    public void setIndirizzoSpedizione(String indirizzoSpedizione) {
+        this.indirizzoSpedizione = indirizzoSpedizione;
+    }
+
+    public String getCitta() {
+        return citta;
+    }
+
+    public void setCitta(String citta) {
+        this.citta = citta;
+    }
+
+    public String getCap() {
+        return cap;
+    }
+
+    public void setCap(String cap) {
+        this.cap = cap;
+    }
+
     @Enumerated(EnumType.STRING)
     private OrderState state;
 

@@ -1,5 +1,6 @@
 package it.uniroma3.it.rez3d.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,5 +12,6 @@ import it.uniroma3.it.rez3d.model.User;
 @Repository
 public interface OrderRepository extends JpaRepository<Order,Long> {
     public Optional<Order> findByUserAndState(User user, OrderState state);
+    public List<Order> findByUser(User user);
     
 }

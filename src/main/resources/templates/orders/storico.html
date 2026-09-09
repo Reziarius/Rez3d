@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>I Miei Ordini</title>
+    <link rel="stylesheet" href="/css/stileAma.css">
+</head>
+
+<body style="font-family: sans-serif;">
+    <!-- Importiamo la navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main style="max-width: 900px; margin: 40px auto; padding: 20px;">
+        <h2>Storico Ordini</h2>
+
+        <!-- Messaggio se non ci sono ordini -->
+        <div th:if="${#lists.isEmpty(ordini)}" style="padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
+            <p>Non hai ancora effettuato ordini. <a th:href="@{/files}">Scopri il catalogo!</a></p>
+        </div>
+
+        <!-- Tabella degli ordini passati -->
+        <table th:if="${!#lists.isEmpty(ordini)}"
+            style="width: 100%; border-collapse: collapse; text-align: left; margin-top: 20px;">
+            <thead>
+                <tr style="border-bottom: 2px solid #333; background-color: #f4f4f4;">
+                    <th style="padding: 12px;">ID Ordine</th>
+                    <th style="padding: 12px;">Indirizzo di Spedizione</th>
+                    <th style="padding: 12px;">Città</th>
+                    <th style="padding: 12px;">Stato</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="ordine : ${ordini}" style="border-bottom: 1px solid #ddd;">
+
+                    <!-- ID cliccabile che porta al dettaglio -->
+                    <td style="padding: 12px;">
+                        <a th:href="@{/storico/{id}(id=${ordine.id})}"
+                            style="color: #007bff; text-decoration: none; font-weight: bold;">
+                            #<span th:text="${ordine.id}"></span>
+                        </a>
+                    </td>
+
+                    <td style="padding: 12px;" th:text="${ordine.indirizzoSpedizione}">Via Roma 1</td>
+                    <td style="padding: 12px;" th:text="${ordine.citta} + ' (' + ${ordine.cap} + ')'">Milano (20100)
+                    </td>
+
+                    <!-- Soluzione infallibile per lo Stato: stampa direttamente il valore dell'enum -->
+                    <td style="padding: 12px; font-weight: bold;" th:text="${ordine.state}">STATO_ORDINE</td>>
+                </tr>
+            </tbody>
+        </table>
+    </main>
+</body>
+
+</html>
