@@ -21,5 +21,7 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
            "FROM Order o JOIN o.items line JOIN line.product p " +
            "WHERE o.user = :user AND p.file = :file AND o.state != 'CART'")
     boolean hasUserPurchasedFile(@Param("user") User user, @Param("file") PrintFile file);
+
+    List<Order> findByStateNot(OrderState state);
     
 }

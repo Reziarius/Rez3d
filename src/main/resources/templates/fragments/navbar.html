@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="it" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <body>
 
     <!-- th:fragment per l'esportazione, ma usiamo il tag <header> e la class="navbar" per collegarlo al CSS -->
     <header th:fragment="navbar" class="navbar">
         <div class="navbar-container">
-            
+
             <!-- Logo a sinistra -->
             <a href="/">
                 <div class="nav-brand">Rez<span>3D</span></div>
@@ -13,7 +14,7 @@
 
             <!-- Azioni a destra -->
             <div class="nav-actions">
-                
+
                 <!-- VISIBILE SOLO SE NON LOGGATO (Anonymous) -->
                 <div sec:authorize="isAnonymous()" style="display: flex; gap: 15px; align-items: center;">
                     <a th:href="@{/login}">Login</a>
@@ -22,28 +23,40 @@
 
                 <!-- VISIBILE SOLO SE LOGGATO (Authenticated) -->
                 <div sec:authorize="isAuthenticated()" style="display: flex; gap: 15px; align-items: center;">
-                    
+
+                    <!-- Questo link apparirà SOLO se l'utente loggato è un Admin -->
+                    <div th:if="${isAdmin}" style="display: inline-block; margin-left: 15px;">
+                        <a href="/admin/orders"
+                            style="text-decoration: none; color: #0F1111; font-weight: bold; padding: 8px 12px; border: 1px solid #D5D9D9; border-radius: 4px; background-color: #F0F2F2;">
+                            📦 Gestione Ordini
+                        </a>
+                    </div>
+
                     <!-- BLOCCO STORICO ORDINI (Stile Amazon) -->
-                    <a th:href="@{/storico}" style="display: flex; flex-direction: column; text-decoration: none; line-height: 1.2;">
-                        <span style="color: var(--text-muted); font-size: 0.85em;">Ciao, <span sec:authentication="name" style="color: white; font-weight: bold;">Utente</span></span>
+                    <a th:href="@{/storico}"
+                        style="display: flex; flex-direction: column; text-decoration: none; line-height: 1.2;">
+                        <span style="color: var(--text-muted); font-size: 0.85em;">Ciao, <span sec:authentication="name"
+                                style="color: white; font-weight: bold;">Utente</span></span>
                         <span style="color: white; font-weight: bold; font-size: 1em;">Resi e Ordini</span>
                     </a>
-                    
+
                     <!-- Carrello -->
-                    <a th:href="@{/cart}" style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: white; font-weight: bold;">
+                    <a th:href="@{/cart}"
+                        style="display: flex; align-items: center; gap: 5px; text-decoration: none; color: white; font-weight: bold;">
                         <span style="font-size: 1.3em;">🛒</span>
                         <span>Carrello</span>
                     </a>
-                    
+
                     <!-- Form Logout con la classe .form-logout e il bottone con .btn-logout -->
                     <form th:action="@{/logout}" method="post" class="form-logout">
                         <button type="submit" class="btn-logout">Logout</button>
                     </form>
                 </div>
-                
+
             </div>
         </div>
     </header>
 
 </body>
+
 </html>

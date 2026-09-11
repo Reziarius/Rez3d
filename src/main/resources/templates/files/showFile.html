@@ -36,9 +36,7 @@
                 </p>
             </div>
 
-            <!-- 1. Il contenitore vuoto per React -->
-            <!-- Usiamo data-file-id per passare l'ID del modello da Thymeleaf a React -->
-            <div id="react-reviews-root" th:attr="data-file-id=${file.id}" style="margin-top: 40px;"></div>
+           
 
             <!-- Sezione Amministrazione (Evidenziata per non confondersi col prodotto) -->
             <div th:if="${isAdmin}"
@@ -62,6 +60,10 @@
                     </form>
                 </div>
             </div>
+
+            <!-- 1. Il contenitore vuoto per React -->
+            <!-- Usiamo data-file-id per passare l'ID del modello da Thymeleaf a React -->
+            <div id="react-reviews-root" th:attr="data-file-id=${file.id}" style="margin-top: 40px;"></div>
 
             <!-- Link per tornare indietro -->
             <div>

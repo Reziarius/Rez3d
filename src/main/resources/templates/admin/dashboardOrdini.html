@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
+
+<head>
+    <title>Gestione Ordini</title>
+    <link rel="stylesheet" href="/css/stileAma.css">
+</head>
+
+<body style="background-color: #f3f3f3; margin: 0; font-family: Arial, sans-serif;">
+
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+        <h1 style="color: #0F1111; margin-bottom: 30px;">Dashboard Ordini Ricevuti</h1>
+
+        <div th:if="${ordini == null || ordini.isEmpty()}"
+            style="background: white; padding: 40px; text-align: center; border-radius: 8px; border: 1px solid #ddd;">
+            <h3>Nessun ordine presente al momento.</h3>
+        </div>
+
+        <div th:if="${ordini != null && !ordini.isEmpty()}" style="display: flex; flex-direction: column; gap: 20px;">
+
+            <div th:each="ordine : ${ordini}"
+                style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 20px; display: flex; gap: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+
+                <!-- Colonna Dettagli Cliente e Spedizione -->
+                <div style="flex: 1; border-right: 1px solid #eee; padding-right: 20px;">
+                    <h3 style="margin-top: 0; color: #0F1111;">Ordine #<span th:text="${ordine.id}"></span></h3>
+                    <p style="color: #565959; margin: 5px 0;"><strong>Cliente:</strong> <span
+                            th:text="${ordine.user.username}"></span></p>
+
+                    <div style="margin-top: 15px; background: #f8f8f8; padding: 10px; border-radius: 4px;">
+                        <strong style="display: block; margin-bottom: 5px;">Indirizzo di Spedizione:</strong>
+                        <div th:text="${ordine.indirizzoSpedizione}">Indirizzo</div>
+                        <span th:text="${ordine.citta}">Città</span> - <span th:text="${ordine.cap}">CAP</span>
+                    </div>
+                </div>
+
+                <!-- Colonna Prodotti -->
+                <div style="flex: 2; border-right: 1px solid #eee; padding-right: 20px;">
+                    <strong style="display: block; margin-bottom: 10px;">Articoli Acquistati:</strong>
+                    <ul style="list-style: none; padding: 0; margin: 0;">
+                        <li th:each="item : ${ordine.items}"
+                            style="display: flex; justify-content: space-between; border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px;">
+                            <span>
+                                <span th:text="${item.quantity}" style="font-weight: bold; color: #007185;"></span>x
+                                <span th:text="${item.product.file.name}">Nome Prodotto</span>
+                                <span th:if="${item.product.dipinto}"
+                                    style="font-size: 12px; background: #FFD814; padding: 2px 5px; border-radius: 3px; margin-left: 5px;">Dipinto
+                                    a mano</span>
+                            </span>
+                            <span style="font-weight: bold;">€ <span
+                                    th:text="${item.product.finalPrice * item.quantity}">0.00</span></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Colonna Gestione Stato -->
+                <div style="flex: 1; display: flex; flex-direction: column; justify-content: space-between;">
+                    <div>
+                        <strong style="display: block; margin-bottom: 10px;">Stato Attuale:</strong>
+                        <span th:text="${ordine.state.name()}" th:style="'display: inline-block; padding: 5px 10px; border-radius: 4px; font-weight: bold; ' + 
+                                        (${ordine.state.name() == 'PENDING'} ? 'background-color: #fff3cd; color: #856404;' : 
+                                        (${ordine.state.name() == 'SPEDITO'} ? 'background-color: #d4edda; color: #155724;' : 
+                                        'background-color: #e2e3e5; color: #383d41;'))">
+                            STATO
+                        </span>
+                    </div>
+
+                    <form th:action="@{/admin/orders/{id}/update-state(id=${ordine.id})}" method="POST"
+                        style="margin-top: 15px;">
+                        <!-- Assicurati che i "value" corrispondano esattamente ai nomi del tuo Enum in Java -->
+                        <select name="state"
+                            style="width: 100%; padding: 8px; border-radius: 4px; border: 1px solid #ccc; margin-bottom: 10px;">
+                            <option value="PENDING" th:selected="${ordine.state.name() == 'PENDING'}">In Lavorazione
+                                (PENDING)</option>
+                            <option value="SPEDITO" th:selected="${ordine.state.name() == 'SPEDITO'}">Spedito</option>
+                            <option value="COMPLETATO" th:selected="${ordine.state.name() == 'COMPLETATO'}">Completato
+                            </option>
+                            <option value="ANNULLATO" th:selected="${ordine.state.name() == 'ANNULLATO'}">Annullato
+                            </option>
+                        </select>
+                        <button type="submit"
+                            style="width: 100%; background-color: #0F1111; color: white; padding: 10px; border-radius: 8px; border: none; cursor: pointer; font-weight: bold;">
+                            Aggiorna Stato
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

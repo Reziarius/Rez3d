@@ -47,6 +47,18 @@ public class OrderService {
         this.orderRepository.deleteById(id);
     }
 
+    public List<Order> getOrdiniRicevuti(){
+        return orderRepository.findByStateNot(OrderState.CART);
+    }
+
+    public void aggiornaStato(Long id, OrderState nuovoStato){
+        Order ordine = orderRepository.findById(id).orElse(null);
+        if(ordine != null){
+            ordine.setState(nuovoStato);
+            orderRepository.save(ordine);
+        }
+    }
+
     @Transactional 
     public List<Order> findByUser(User user){
         List<Order> result = this.orderRepository.findByUser(user);

@@ -26,7 +26,7 @@ public class CredentialsService {
         return result.orElse(null);
     }
 
-    @Transactional
+    @Transactional  
     public Credentials getCredentials (String username){
         Optional<Credentials> result = Optional.ofNullable(this.credentialsRepository.findByUsername(username));
         return result.orElse(null);
