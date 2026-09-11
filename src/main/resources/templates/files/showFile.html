@@ -7,20 +7,23 @@
 </head>
 
 <body style="background-color: #f3f3f3; margin: 0; font-family: Arial, sans-serif;">
-    
+
     <!-- Ho aggiunto la navbar per continuità col resto del sito -->
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <main style="max-width: 800px; margin: 40px auto; padding: 0 20px;">
-        
+
         <!-- Card Principale Dettagli -->
-        <div th:if="${file}" style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
-            
+        <div th:if="${file}"
+            style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+
             <!-- Intestazione -->
             <div style="border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 20px;">
                 <h1 th:text="${file.name}" style="margin: 0 0 10px 0; font-size: 28px; color: #0F1111;">Nome File</h1>
                 <!-- Categoria a stile "badge" -->
-                <span style="font-size: 14px; color: #007185; background-color: #f0f8ff; padding: 5px 10px; border-radius: 4px; font-weight: bold;" th:text="${file.category}">Categoria</span>
+                <span
+                    style="font-size: 14px; color: #007185; background-color: #f0f8ff; padding: 5px 10px; border-radius: 4px; font-weight: bold;"
+                    th:text="${file.category}">Categoria</span>
             </div>
 
             <!-- Dettagli -->
@@ -33,19 +36,27 @@
                 </p>
             </div>
 
+            <!-- 1. Il contenitore vuoto per React -->
+            <!-- Usiamo data-file-id per passare l'ID del modello da Thymeleaf a React -->
+            <div id="react-reviews-root" th:attr="data-file-id=${file.id}" style="margin-top: 40px;"></div>
+
             <!-- Sezione Amministrazione (Evidenziata per non confondersi col prodotto) -->
-            <div th:if="${isAdmin}" style="background-color: #f8f8f8; border: 1px solid #e7e7e7; border-left: 5px solid #007185; padding: 20px; border-radius: 4px; margin-bottom: 25px;">
+            <div th:if="${isAdmin}"
+                style="background-color: #f8f8f8; border: 1px solid #e7e7e7; border-left: 5px solid #007185; padding: 20px; border-radius: 4px; margin-bottom: 25px;">
                 <h3 style="margin-top: 0; color: #0F1111; font-size: 18px;">Pannello Amministratore</h3>
-                
+
                 <div style="display: flex; gap: 15px; align-items: center;">
                     <!-- Bottone Modifica (Grigio stile Amazon) -->
-                    <a th:href="@{/admin/files/{id}/edit(id=${file.id})}" style="text-decoration: none; background-color: #F0F2F2; color: #0F1111; padding: 8px 16px; border-radius: 8px; border: 1px solid #D5D9D9; font-size: 14px; box-shadow: 0 2px 5px rgba(213,217,217,0.5);">
+                    <a th:href="@{/admin/files/{id}/edit(id=${file.id})}"
+                        style="text-decoration: none; background-color: #F0F2F2; color: #0F1111; padding: 8px 16px; border-radius: 8px; border: 1px solid #D5D9D9; font-size: 14px; box-shadow: 0 2px 5px rgba(213,217,217,0.5);">
                         ✏️ Modifica file
                     </a>
-                    
+
                     <!-- Bottone Elimina (Bordo Rosso) -->
                     <form th:action="@{'/admin/files/' + ${file.id} + '/delete' }" method="POST" style="margin: 0;">
-                        <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare definitivamente questo file?')" style="background-color: #ffffff; color: #d11a2a; padding: 8px 16px; border-radius: 8px; border: 1px solid #d11a2a; font-size: 14px; cursor: pointer;">
+                        <button type="submit"
+                            onclick="return confirm('Sei sicuro di voler eliminare definitivamente questo file?')"
+                            style="background-color: #ffffff; color: #d11a2a; padding: 8px 16px; border-radius: 8px; border: 1px solid #d11a2a; font-size: 14px; cursor: pointer;">
                             🗑️ Elimina File
                         </button>
                     </form>
@@ -54,19 +65,211 @@
 
             <!-- Link per tornare indietro -->
             <div>
-                <a href="/files" style="text-decoration: none; color: #007185; font-size: 14px; font-weight: bold;">&larr; Torna all'elenco dei file</a>
+                <a href="/files"
+                    style="text-decoration: none; color: #007185; font-size: 14px; font-weight: bold;">&larr; Torna
+                    all'elenco dei file</a>
             </div>
-            
+
         </div>
 
         <!-- Caso in cui il file non esista (Es. ID sbagliato nell'URL) -->
-        <div th:unless="${file}" style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 40px; text-align: center;">
+        <div th:unless="${file}"
+            style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 40px; text-align: center;">
             <h2 style="color: #d11a2a; margin-top: 0;">Errore: Il file non esiste.</h2>
             <p style="color: #565959;">Il prodotto che stai cercando è stato rimosso o non è disponibile.</p>
-            <a href="/files" style="text-decoration: none; color: #007185; font-size: 16px; font-weight: bold;">Torna al catalogo</a>
+            <a href="/files" style="text-decoration: none; color: #007185; font-size: 16px; font-weight: bold;">Torna al
+                catalogo</a>
         </div>
 
+
     </main>
+
+    <!-- 2. CDN Pulite senza attributi vuoti -->
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <!-- 3. Script con CDATA per nascondere il JSX a Thymeleaf -->
+    <script type="text/babel">
+        /*<![CDATA[*/
+        const { useState, useEffect } = React;
+
+        function ReviewsWidget({ fileId }) {
+            const [isOpen, setIsOpen] = useState(false);
+            
+            const [reviews, setReviews] = useState([]);
+            const [loading, setLoading] = useState(false);
+            const [title, setTitle] = useState('');
+            const [text, setText] = useState('');
+            
+            // Stato per il voto effettivo e per l'effetto hover (passaggio del mouse)
+            const [rating, setRating] = useState(5);
+            const [hoverRating, setHoverRating] = useState(0);
+            
+            const [errorMessage, setErrorMessage] = useState(null);
+
+            useEffect(() => {
+                if (!isOpen) return; 
+
+                setLoading(true);
+                fetch(`/api/files/${fileId}/reviews`)
+                    .then(response => response.json())
+                    .then(data => {
+                        setReviews(data);
+                        setLoading(false);
+                    })
+                    .catch(error => {
+                        console.error("Errore:", error);
+                        setLoading(false);
+                    });
+            }, [fileId, isOpen]);
+
+            const handleSubmit = async (e) => {
+                e.preventDefault();
+                setErrorMessage(null);
+
+                const reviewData = { title, text, rating };
+
+                try {
+                    const response = await fetch(`/api/files/${fileId}/reviews`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(reviewData)
+                    });
+
+                    if (response.ok) {
+                        const newReview = await response.json();
+                        setReviews([newReview, ...reviews]);
+                        setTitle('');
+                        setText('');
+                        setRating(5);
+                        setHoverRating(0);
+                    } else if (response.status === 401) {
+                        setErrorMessage("Devi effettuare il login per lasciare una recensione.");
+                    } else {
+                        const errorText = await response.text();
+                        setErrorMessage(errorText);
+                    }
+                } catch (error) {
+                    setErrorMessage("Errore di connessione col server.");
+                }
+            };
+
+            if (!isOpen) {
+                return (
+                    <div style={{ marginTop: '30px', borderTop: '1px solid #ddd', paddingTop: '20px', textAlign: 'center' }}>
+                        <button 
+                            onClick={() => setIsOpen(true)} 
+                            style={{ backgroundColor: '#F0F2F2', color: '#0F1111', padding: '12px 24px', borderRadius: '100px', border: '1px solid #D5D9D9', cursor: 'pointer', fontWeight: 'bold', fontSize: '16px' }}
+                        >
+                            Mostra Recensioni ⭐
+                        </button>
+                    </div>
+                );
+            }
+
+            return (
+                <div style={{ marginTop: '30px', borderTop: '1px solid #ddd', paddingTop: '20px' }}>
+                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <h2>Recensioni dei Clienti</h2>
+                        <button 
+                            onClick={() => setIsOpen(false)} 
+                            style={{ backgroundColor: 'transparent', color: '#007185', border: 'none', cursor: 'pointer', fontWeight: 'bold', textDecoration: 'underline', fontSize: '14px' }}
+                        >
+                            Nascondi
+                        </button>
+                    </div>
+                    
+                    {loading ? (
+                        <p>Caricamento recensioni in corso...</p>
+                    ) : (
+                        <>
+                            <div style={{ background: '#f8f8f8', padding: '20px', borderRadius: '8px', marginBottom: '20px' }}>
+                                <h3 style={{ marginTop: 0 }}>Scrivi una recensione</h3>
+                                
+                                {errorMessage && (
+                                    <div style={{ color: '#d11a2a', marginBottom: '10px', fontWeight: 'bold' }}>
+                                        ⚠️ {errorMessage}
+                                    </div>
+                                )}
+
+                                <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '15px' }}>
+                                    
+                                    {/* SELETTORE A STELLE INTERATTIVO */}
+                                    <div style={{ display: 'flex', gap: '5px' }}>
+                                        {[1, 2, 3, 4, 5].map((star) => (
+                                            <span 
+                                                key={star}
+                                                onMouseEnter={() => setHoverRating(star)}
+                                                onMouseLeave={() => setHoverRating(0)}
+                                                onClick={() => setRating(star)}
+                                                style={{
+                                                    cursor: 'pointer',
+                                                    fontSize: '28px',
+                                                    // Se la stella è minore o uguale al rating corrente (o all'hover), si colora
+                                                    color: star <= (hoverRating || rating) ? '#e77600' : '#ccc',
+                                                    transition: 'color 0.2s'
+                                                }}
+                                            >
+                                                ★
+                                            </span>
+                                        ))}
+                                    </div>
+
+                                    <input 
+                                        type="text" 
+                                        placeholder="Titolo (es. Modello fantastico!)" 
+                                        value={title} 
+                                        onChange={(e) => setTitle(e.target.value)} 
+                                        required="required" 
+                                        style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc', fontSize: '14px' }}
+                                    />
+
+                                    <textarea 
+                                        placeholder="Dicci la tua!" 
+                                        value={text} 
+                                        onChange={(e) => setText(e.target.value)} 
+                                        required="required" 
+                                        rows="4" 
+                                        style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ccc', fontFamily: 'inherit', fontSize: '14px' }}
+                                    ></textarea>
+
+                                    <button type="submit" style={{ backgroundColor: '#FFD814', color: '#0F1111', padding: '12px', borderRadius: '100px', border: '1px solid #FCD200', cursor: 'pointer', fontWeight: 'bold', width: '200px', fontSize: '14px' }}>
+                                        Invia Recensione
+                                    </button>
+                                </form>
+                            </div>
+
+                            <div>
+                                {reviews.length === 0 ? (
+                                    <p style={{ color: '#565959' }}>Non ci sono ancora recensioni per questo prodotto. Sii il primo!</p>
+                                ) : (
+                                    reviews.map((rev) => (
+                                        <div key={rev.id} style={{ marginBottom: '20px', borderBottom: '1px solid #eee', paddingBottom: '15px' }}>
+                                            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
+                                                <span style={{ fontWeight: 'bold', color: '#0F1111' }}>{rev.authorName}</span>
+                                                <span style={{ color: '#e77600', letterSpacing: '2px' }}>
+                                                    {'★'.repeat(rev.rating)}{'☆'.repeat(5 - rev.rating)}
+                                                </span>
+                                            </div>
+                                            <h4 style={{ margin: '0 0 5px 0', fontSize: '16px', color: '#0F1111' }}>{rev.title}</h4>
+                                            <p style={{ margin: 0, color: '#333', lineHeight: '1.4' }}>{rev.text}</p>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        </>
+                    )}
+                </div>
+            );
+        }
+
+        const rootElement = document.getElementById('react-reviews-root');
+        const fileId = rootElement.getAttribute('data-file-id');
+        const root = ReactDOM.createRoot(rootElement);
+        root.render(<ReviewsWidget fileId={fileId} />);
+        /*]]>*/
+    </script>
 </body>
 
 </html>

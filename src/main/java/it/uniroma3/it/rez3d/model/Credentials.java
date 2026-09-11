@@ -1,5 +1,7 @@
 package it.uniroma3.it.rez3d.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -17,6 +19,7 @@ public class Credentials {
     private Long id;
     @Column(nullable = false, unique = true)
     private String username;
+    @JsonIgnore
     @Column(nullable = false, unique = false)
     private String password;
     private String role;
