@@ -12,33 +12,6 @@
 
 
             <h1>Personalizza: <span th:text="${file.name}" style="color: var(--text-color);">Nome Modello</span></h1>
-
-            <!-- 1. Il contenitore dove apparirà il modello 3D -->
-            <div id="stl_cont"
-                style="width: 100%; max-width: 500px; height: 400px; margin: 0 auto; border: 1px solid #ddd; border-radius: 8px; overflow: hidden;">
-            </div>
-
-            <!-- 2. Importiamo lo script direttamente online (senza scaricare nulla) -->
-            <script src="https://viewstl.com/plugin/stl_viewer.min.js"></script>
-
-            <!-- 3. Inizializziamo il visualizzatore passandogli il nome del file dal Database -->
-            <script th:inline="javascript">
-                // th:inline ci permette di leggere variabili Java/Thymeleaf dentro JavaScript!
-                // Sostituisci file.stlFileName con il getter corretto della tua entità
-                var nomeFile = /*[[${file.stlFileName}]]*/ 'test.stl';
-                var percorsoCompleto = '/models/' + nomeFile;
-
-                var stl_viewer = new StlViewer(
-                    document.getElementById("stl_cont"),
-                    {
-                        models: [{ id: 0, filename: percorsoCompleto }],
-                        bgcolor: "#f4f4f4",       // Sfondo grigio chiaro elegante
-                        model_color: "#007bff",   // Colore del modello 3D (es. blu)
-                        zoom: -1                  // Auto-zoom per inquadrare tutto il modello
-                    }
-                );
-            </script>
-
             <div class="price-badge">
                 Prezzo finale: € <span id="finalPrice" th:text="${file.price}">0.00</span></p>
             </div>

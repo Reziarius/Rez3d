@@ -1,28 +1,68 @@
 <!DOCTYPE html>
-<html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>Files</title>
+    <title>Catalogo Modelli</title>
     <link rel="stylesheet" href="/css/stileAma.css" />
 </head>
 
-<body>
+<body style="background-color: #eaeded; margin: 0; font-family: Arial, sans-serif;">
+    
     <div th:replace="~{fragments/navbar :: navbar}"></div>
-    <main>
-        <h1>Modelli</h1>
-
-        <div th:if="${isAdmin}" style="margin-bottom: 20px;">
-            <a href="/admin/files/new"><button>Crea nuovo file</button></a>
+    
+    <main style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
+        
+        <!-- Intestazione e Bottone Admin -->
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
+            <h1 style="margin: 0; font-size: 28px; color: #0F1111;">Catalogo Modelli</h1>
+            
+            <div th:if="${isAdmin}">
+                <a href="/admin/files/new" style="text-decoration: none;">
+                    <button style="background-color: #007185; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                        + Crea nuovo file
+                    </button>
+                </a>
+            </div>
         </div>
 
-        <div th:if="${files==null || files.isEmpty()}">Non ci sono prodotti</div>
-        <ul>
-            <li th:each="file : ${files}">
-                <a th:href="@{'/files/' + ${file.id}}" th:text="${file.name}">Nome</a>
-                <span th:text="' - €' + ${file.price}"></span>
-                <a th:href="@{/files/{id}/personalizza(id=${file.id})}">Personalizza</a>
-            </li>
-        </ul>
+        <!-- Messaggio catalogo vuoto -->
+        <div th:if="${files==null || files.isEmpty()}" style="background: white; padding: 40px; text-align: center; border-radius: 8px; border: 1px solid #ddd;">
+            <h3 style="color: #565959; margin: 0;">Non ci sono prodotti al momento.</h3>
+        </div>
+
+        <!-- Griglia Prodotti (Layout a Card senza immagini) -->
+        <div th:if="${files!=null && !files.isEmpty()}" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 25px;">
+            
+            <!-- Singola Card -->
+            <div th:each="file : ${files}" style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 20px; display: flex; flex-direction: column; transition: transform 0.2s, box-shadow 0.2s;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 16px rgba(0,0,0,0.1)'" onmouseout="this.style.transform='none'; this.style.boxShadow='none'">
+                
+                <!-- Dettagli base -->
+                <div style="flex-grow: 1; border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px;">
+                    <a th:href="@{'/files/' + ${file.id}}" style="text-decoration: none; color: #0F1111;">
+                        <h2 th:text="${file.name}" style="margin: 0 0 10px 0; font-size: 20px;">Nome File</h2>
+                    </a>
+                    
+                    <div style="font-size: 26px; font-weight: bold; color: #B12704;">
+                        <span style="font-size: 14px; position: relative; top: -8px;">€</span><span th:text="${file.price}">0.00</span>
+                    </div>
+                </div>
+
+                <!-- Bottoni di azione impilati -->
+                <div style="display: flex; flex-direction: column; gap: 10px;">
+                    <!-- Bottone Principale Giallo -->
+                    <a th:href="@{/files/{id}/personalizza(id=${file.id})}" style="text-align: center; background-color: #FFD814; color: #0F1111; padding: 12px; border-radius: 100px; text-decoration: none; font-size: 14px; font-weight: bold; border: 1px solid #FCD200; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#F7CA00'" onmouseout="this.style.backgroundColor='#FFD814'">
+                        Personalizza
+                    </a>
+                    
+                    <!-- Bottone Secondario Grigio -->
+                    <a th:href="@{'/files/' + ${file.id}}" style="text-align: center; background-color: #F0F2F2; color: #0F1111; padding: 10px; border-radius: 100px; text-decoration: none; font-size: 14px; border: 1px solid #D5D9D9; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#E3E6E6'" onmouseout="this.style.backgroundColor='#F0F2F2'">
+                        Vedi dettagli
+                    </a>
+                </div>
+                
+            </div>
+            
+        </div>
     </main>
 </body>
 

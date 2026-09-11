@@ -1,46 +1,72 @@
 <!DOCTYPE html>
-<html>
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 
 <head>
-    <title>File</title>
+    <title>Dettagli File</title>
     <link rel="stylesheet" href="/css/stileAma.css" />
 </head>
 
-<body>
-    <main>
-        <div th:if="${file}">
+<body style="background-color: #f3f3f3; margin: 0; font-family: Arial, sans-serif;">
+    
+    <!-- Ho aggiunto la navbar per continuità col resto del sito -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-            <h1>Dettagli file</h1>
+    <main style="max-width: 800px; margin: 40px auto; padding: 0 20px;">
+        
+        <!-- Card Principale Dettagli -->
+        <div th:if="${file}" style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+            
+            <!-- Intestazione -->
+            <div style="border-bottom: 1px solid #eee; padding-bottom: 20px; margin-bottom: 20px;">
+                <h1 th:text="${file.name}" style="margin: 0 0 10px 0; font-size: 28px; color: #0F1111;">Nome File</h1>
+                <!-- Categoria a stile "badge" -->
+                <span style="font-size: 14px; color: #007185; background-color: #f0f8ff; padding: 5px 10px; border-radius: 4px; font-weight: bold;" th:text="${file.category}">Categoria</span>
+            </div>
+
+            <!-- Dettagli -->
+            <div style="margin-bottom: 30px;">
+                <div style="font-size: 24px; font-weight: bold; color: #B12704; margin-bottom: 15px;">
+                    Prezzo: € <span th:text="${file.price}">0.00</span>
+                </div>
+                <p style="color: #565959; font-size: 16px; margin: 5px 0;">
+                    <strong>Artista:</strong> <span th:text="${file.artist}">Nome Artista</span>
+                </p>
+            </div>
+
+            <!-- Sezione Amministrazione (Evidenziata per non confondersi col prodotto) -->
+            <div th:if="${isAdmin}" style="background-color: #f8f8f8; border: 1px solid #e7e7e7; border-left: 5px solid #007185; padding: 20px; border-radius: 4px; margin-bottom: 25px;">
+                <h3 style="margin-top: 0; color: #0F1111; font-size: 18px;">Pannello Amministratore</h3>
+                
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <!-- Bottone Modifica (Grigio stile Amazon) -->
+                    <a th:href="@{/admin/files/{id}/edit(id=${file.id})}" style="text-decoration: none; background-color: #F0F2F2; color: #0F1111; padding: 8px 16px; border-radius: 8px; border: 1px solid #D5D9D9; font-size: 14px; box-shadow: 0 2px 5px rgba(213,217,217,0.5);">
+                        ✏️ Modifica file
+                    </a>
+                    
+                    <!-- Bottone Elimina (Bordo Rosso) -->
+                    <form th:action="@{'/admin/files/' + ${file.id} + '/delete' }" method="POST" style="margin: 0;">
+                        <button type="submit" onclick="return confirm('Sei sicuro di voler eliminare definitivamente questo file?')" style="background-color: #ffffff; color: #d11a2a; padding: 8px 16px; border-radius: 8px; border: 1px solid #d11a2a; font-size: 14px; cursor: pointer;">
+                            🗑️ Elimina File
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Link per tornare indietro -->
             <div>
-                <p th:text="${file.name}">Nome File</p>
-                <strong>Prezzo:</strong>€<span th:text="${file.price}"></span>
-                <p th:text="${file.category}">Categoria file</p>
-                <p th:text="${file.artist}">Artista</p>
+                <a href="/files" style="text-decoration: none; color: #007185; font-size: 14px; font-weight: bold;">&larr; Torna all'elenco dei file</a>
             </div>
-
-            <!--questa parte viene mostrata solo agli admin (edit e delete)-->
-            <div th:if="${isAdmin}" style="margin-bottom: 20px;">
-                <h3>Amministrazione</h3>
-                <a th:href="@{/admin/files/{id}/edit(id=${file.id})}">Modifica file</a>
-                <br><br>
-                <form th:action="@{'/admin/files/' + ${file.id} + '/delete' }" method="POST" style="display:inline;">
-                    <button type="submit" onclick="return confirm ('Sei sicuro di voler elminare questo file?')">Elimina
-                        File</button>
-                </form>
-            </div>
-
+            
         </div>
 
-        <div th:unless="${file}">
-            Il file non esiste
+        <!-- Caso in cui il file non esista (Es. ID sbagliato nell'URL) -->
+        <div th:unless="${file}" style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 40px; text-align: center;">
+            <h2 style="color: #d11a2a; margin-top: 0;">Errore: Il file non esiste.</h2>
+            <p style="color: #565959;">Il prodotto che stai cercando è stato rimosso o non è disponibile.</p>
+            <a href="/files" style="text-decoration: none; color: #007185; font-size: 16px; font-weight: bold;">Torna al catalogo</a>
         </div>
 
-
-        <div>
-            <br>
-            <a href="/files">Torna all'elenco dei file</a>
-        </div>
+    </main>
 </body>
-</main>
 
 </html>
