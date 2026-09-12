@@ -15,10 +15,13 @@ import jakarta.validation.Valid;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-
-
-
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
+import java.util.UUID;
+import org.springframework.web.multipart.MultipartFile;
 
 @Controller
 public class PrintFileController {
@@ -51,12 +54,41 @@ public class PrintFileController {
         return "admin/formFile";
     }
     @PostMapping("/admin/files")
-    public String save(@Valid @ModelAttribute("file") PrintFile file, BindingResult bindingResult, Model model) {
+    public String save(@Valid @ModelAttribute("file") PrintFile file, 
+                       BindingResult bindingResult, 
+                       @RequestParam(value = "stlFile", required = false) MultipartFile stlFile,
+                       Model model) {
         if(bindingResult.hasErrors()){
             return "admin/formFile";
         }
-        printFileService.save(file);
         
+        if (file.getId() != null) {
+            Optional<PrintFile> existingOpt = printFileService.findById(file.getId());
+            if (existingOpt.isPresent() && (stlFile == null || stlFile.isEmpty())) {
+                file.setStlPath(existingOpt.get().getStlPath());
+            }
+        }
+        
+        if (stlFile != null && !stlFile.isEmpty()) {
+            try {
+                String originalFilename = stlFile.getOriginalFilename();
+                String extension = ".stl";
+                if (originalFilename != null && originalFilename.contains(".")) {
+                    extension = originalFilename.substring(originalFilename.lastIndexOf("."));
+                }
+                String filename = UUID.randomUUID().toString() + extension;
+                Path uploadPath = Paths.get("uploads/models");
+                Files.createDirectories(uploadPath);
+                Path targetLocation = uploadPath.resolve(filename);
+                Files.copy(stlFile.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
+                file.setStlPath("/uploads/models/" + filename);
+            } catch (IOException e) {
+                bindingResult.reject("upload.error", "Errore durante il salvataggio del file STL: " + e.getMessage());
+                return "admin/formFile";
+            }
+        }
+        
+        printFileService.save(file);
         return "redirect:/files/"+file.getId();
     }
     

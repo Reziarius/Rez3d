@@ -39,6 +39,8 @@ public class PrintFile {
 
     private String image;
 
+    private String stlPath;
+
     @OneToMany(mappedBy = "file")
     private List<RealProduct> prodotti;
     
@@ -83,6 +85,12 @@ public class PrintFile {
     }
     public void setImage(String image) {
         this.image = image;
+    }
+    public String getStlPath() {
+        return stlPath;
+    }
+    public void setStlPath(String stlPath) {
+        this.stlPath = stlPath;
     }
 
     @Override

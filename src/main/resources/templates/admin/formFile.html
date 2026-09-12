@@ -26,7 +26,7 @@
         <!-- Box bianco stile Card -->
         <div style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 30px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
             
-            <form th:action="@{/admin/files}" method="POST" th:object="${file}" style="display: flex; flex-direction: column; gap: 20px;">
+            <form th:action="@{/admin/files}" method="POST" th:object="${file}" enctype="multipart/form-data" style="display: flex; flex-direction: column; gap: 20px;">
 
                 <!-- Gestione Errori Globali -->
                 <div th:if="${#fields.hasGlobalErrors()}" style="background-color: #f8d7da; color: #721c24; padding: 15px; border-radius: 4px; border: 1px solid #f5c6cb;">
@@ -61,6 +61,22 @@
                     <label style="font-weight: bold; color: #0F1111; font-size: 14px;">Artista:</label>
                     <input type="text" th:field="*{artist}" required style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;" onfocus="this.style.boxShadow='0 0 0 2px #c8f3fa'; this.style.borderColor='#007185'" onblur="this.style.boxShadow='none'; this.style.borderColor='#ccc'" />
                     <span th:if="${#fields.hasErrors('artist')}" th:errors="*{artist}" style="color: #d11a2a; font-size: 12px; font-weight: bold;">Errore</span>
+                </div>
+
+                <!-- Campo Descrizione -->
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <label style="font-weight: bold; color: #0F1111; font-size: 14px;">Descrizione:</label>
+                    <textarea th:field="*{description}" rows="3" required style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px; font-family: inherit;" onfocus="this.style.boxShadow='0 0 0 2px #c8f3fa'; this.style.borderColor='#007185'" onblur="this.style.boxShadow='none'; this.style.borderColor='#ccc'"></textarea>
+                    <span th:if="${#fields.hasErrors('description')}" th:errors="*{description}" style="color: #d11a2a; font-size: 12px; font-weight: bold;">Errore</span>
+                </div>
+
+                <!-- Campo Caricamento Modello 3D (.stl) -->
+                <div style="display: flex; flex-direction: column; gap: 5px;">
+                    <label style="font-weight: bold; color: #0F1111; font-size: 14px;">Carica File Modello 3D (.stl):</label>
+                    <input type="file" name="stlFile" accept=".stl" style="padding: 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;" />
+                    <small style="color: #565959; font-size: 12px;" th:if="${file.stlPath != null}">
+                        File attualmente caricato: <span th:text="${file.stlPath}"></span>
+                    </small>
                 </div>
 
                 <!-- Bottone di Submit -->
