@@ -60,7 +60,7 @@ public class CartController{
         }
         OrderLine line = this.orderLineService.findById(lineId);
         if (line != null && line.getOrder() != null && line.getOrder().getUser() != null 
-                && principal.getName().equals(line.getOrder().getUser().getUsername()) 
+                && principal.getName().equals(line.getOrder().getUser().getUsername())  //verifichiamo che l'utente loggato sia il proprietario dell'ordine a cui appartiene la riga
                 && OrderState.CART.equals(line.getOrder().getState())) {
             if (nuovaQuantità <= 0) {
                 orderLineService.deleteById(lineId);
