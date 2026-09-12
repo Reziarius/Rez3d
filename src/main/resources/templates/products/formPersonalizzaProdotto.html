@@ -7,13 +7,19 @@
 </head>
 
 <body>
-    <main>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <main style="max-width: 600px; margin: 30px auto; padding: 0 20px;">
+        <div style="margin-bottom: 20px;">
+            <a th:href="@{/files}" style="text-decoration: none; color: #007185; font-weight: bold; font-size: 15px; display: inline-flex; align-items: center; gap: 5px;">
+                &larr; Torna al Catalogo
+            </a>
+        </div>
+
         <div class="customization-wrapper">
-
-
             <h1>Personalizza: <span th:text="${file.name}" style="color: var(--text-color);">Nome Modello</span></h1>
             <div class="price-badge">
-                Prezzo finale: € <span id="finalPrice" th:text="${file.price}">0.00</span></p>
+                Prezzo finale: € <span id="finalPrice" th:text="${file.price}">0.00</span>
             </div>
             <!--attenzione perchè quando passiamo questo indirizzo occorre fare attenzione, springboot vede i campi di product ed inizia a riempirli e 
             nel leggere l'url vede che è presente un parametro di nome "id", che è del printFile, ma ha lo stesso nome del parametro del

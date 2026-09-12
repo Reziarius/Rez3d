@@ -14,8 +14,14 @@
     <header th:replace="~{fragments/navbar :: navbar}"></header>
 
     <main class="cart-container">
+        <!-- Pulsante Torna Indietro -->
+        <div style="margin-bottom: 20px;">
+            <a th:href="@{/files}" style="text-decoration: none; color: #007185; font-weight: bold; font-size: 15px; display: inline-flex; align-items: center; gap: 5px;">
+                &larr; Torna al Catalogo
+            </a>
+        </div>
 
-        <h1 style="border-bottom: none; margin-bottom: 30px;">Carrello <span th:text="${carrello.items != null ? carrello.items.size() : 0}"></span>
+        <h1 style="border-bottom: none; margin-bottom: 30px;">Il tuo Carrello (<span th:text="${carrello.items != null ? carrello.items.size() : 0}"></span>)
         </h1>
 
         <!-- Messaggio carrello vuoto -->

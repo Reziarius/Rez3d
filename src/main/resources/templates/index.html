@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="it" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -12,46 +12,44 @@
 <body>
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
-    <!-- Navbar stile "unificata" 
-    <header class="navbar">
-        <div class="navbar-container">
-            <div class="nav-brand">Rez<span>3D</span></div>
-            <div class="nav-actions">
-            
-                <div th:if="${userDetails}" style="display: flex; gap: 15px; align-items: center;">
-                    <span th:text="${userDetails.username}" style="color:white; font-weight: bold;"></span>
-                    <a href="/cart" style="font-size: 1.2em; text-decoration: none;">🛒 Carrello</a>
-                    <form th:action="@{/logout}" method="POST" class="form-logout">
-                        <button type="submit" class="btn-logout">Logout</button>
-                    </form>
-                </div>                
-                <div th:unless="${userDetails}">
-                    <a href="/login" class="btn-action">Login</a>
-                </div>
-            
-            </div>
-        </div>
-    </header>
-    -->
-
-    <!-- Contenitore principale centrato -->
     <main class="main-container">
         
-        <!-- Hero Section con effetto Glassmorphism -->
-        <div class="glass-panel text-center hero-section">
-            <h1>Benvenuto in Rez3D!</h1>
-            <p class="description">Esplora un mondo di stampe. Trasformiamo i tuoi modelli digitali (STL, OBJ) in realtà con precisione millimetrica e materiali di alta qualità.</p>
+        <!-- Hero Section -->
+        <div class="glass-panel text-center hero-section" style="margin-top: 20px; padding: 40px 20px;">
+            <h1 style="font-size: 2.5rem; margin-bottom: 15px;">Benvenuto su Rez3D!</h1>
+            <p class="description" style="max-width: 650px; margin: 0 auto 25px auto; font-size: 1.1rem; color: #555;">
+                Trasformiamo modelli 3D digitali in prodotti fisici personalizzabili di alta qualità con precisione millimetrica.
+            </p>
+            <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
+                <a th:href="@{/files}" class="btn-action" style="padding: 12px 28px; font-size: 1.1rem; border-radius: 25px;">
+                    📂 Sfoglia il Catalogo 3D
+                </a>
+            </div>
         </div>
 
-        <h2>Esplora i nostri servizi</h2>
+        <h2 style="margin-top: 40px; margin-bottom: 20px;">Esplora i nostri servizi</h2>
         
         <!-- Griglia in stile "Home Card" -->
-        <div class="home-grid">
+        <div class="home-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px;">
             <!-- Card 1 -->
-            <a href="/files" class="home-card">
-                <div class="home-card-icon">🖨️</div>
-                <div class="home-card-title">Lista dei Prodotti</div>
-                <p>Sfoglia il nostro catalogo di modelli pronti per essere stampati in 3D.</p>
+            <a th:href="@{/files}" class="home-card" style="display: block; text-decoration: none; padding: 25px; border-radius: 12px; background: white; border: 1px solid #e0e0e0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s;">
+                <div class="home-card-icon" style="font-size: 2.5rem; margin-bottom: 10px;">🖨️</div>
+                <div class="home-card-title" style="font-size: 1.3rem; font-weight: bold; color: #111; margin-bottom: 8px;">Catalogo Modelli 3D</div>
+                <p style="color: #666; margin: 0; line-height: 1.4;">Sfoglia il nostro catalogo, scegli la dimensione ed opzionalmente la pittura a mano per aggiungere il prodotto al carrello.</p>
+            </a>
+
+            <!-- Card 2 -->
+            <a th:href="@{/cart}" class="home-card" style="display: block; text-decoration: none; padding: 25px; border-radius: 12px; background: white; border: 1px solid #e0e0e0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s;">
+                <div class="home-card-icon" style="font-size: 2.5rem; margin-bottom: 10px;">🛒</div>
+                <div class="home-card-title" style="font-size: 1.3rem; font-weight: bold; color: #111; margin-bottom: 8px;">Il tuo Carrello</div>
+                <p style="color: #666; margin: 0; line-height: 1.4;">Visualizza gli articoli inseriti nel tuo carrello, modifica le quantità o procedi al checkout.</p>
+            </a>
+
+            <!-- Card 3 -->
+            <a th:href="@{/storico}" class="home-card" style="display: block; text-decoration: none; padding: 25px; border-radius: 12px; background: white; border: 1px solid #e0e0e0; box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s, box-shadow 0.2s;">
+                <div class="home-card-icon" style="font-size: 2.5rem; margin-bottom: 10px;">📦</div>
+                <div class="home-card-title" style="font-size: 1.3rem; font-weight: bold; color: #111; margin-bottom: 8px;">Storico Ordini</div>
+                <p style="color: #666; margin: 0; line-height: 1.4;">Traccia lo stato dei tuoi ordini passati, visualizza la spedizione ed i dettagli di acquisto.</p>
             </a>
         </div>
 

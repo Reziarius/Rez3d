@@ -12,6 +12,12 @@
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <main style="max-width: 800px; margin: 40px auto; padding: 0 20px;">
+        <!-- Pulsante Torna Indietro -->
+        <div style="margin-bottom: 20px;">
+            <a th:href="@{/files}" style="text-decoration: none; color: #007185; font-weight: bold; font-size: 15px; display: inline-flex; align-items: center; gap: 5px;">
+                &larr; Torna al Catalogo
+            </a>
+        </div>
 
         <!-- Card Principale Dettagli -->
         <div th:if="${file}"
@@ -34,23 +40,31 @@
                 <p style="color: #565959; font-size: 16px; margin: 5px 0;">
                     <strong>Artista:</strong> <span th:text="${file.artist}">Nome Artista</span>
                 </p>
+                <p style="color: #333; font-size: 15px; margin: 15px 0; line-height: 1.5;" th:text="${file.description}">
+                    Descrizione del modello...
+                </p>
+
+                <!-- Pulsante Personalizza e Acquista -->
+                <div style="margin-top: 20px;">
+                    <a th:href="@{/files/{id}/personalizza(id=${file.id})}" style="display: inline-block; background-color: #FFD814; color: #0F1111; padding: 12px 25px; border-radius: 100px; text-decoration: none; font-size: 16px; font-weight: bold; border: 1px solid #FCD200; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                        🛠️ Personalizza e Aggiungi al Carrello
+                    </a>
+                </div>
             </div>
 
-           
-
-            <!-- Sezione Amministrazione (Evidenziata per non confondersi col prodotto) -->
+            <!-- Sezione Amministrazione -->
             <div th:if="${isAdmin}"
                 style="background-color: #f8f8f8; border: 1px solid #e7e7e7; border-left: 5px solid #007185; padding: 20px; border-radius: 4px; margin-bottom: 25px;">
                 <h3 style="margin-top: 0; color: #0F1111; font-size: 18px;">Pannello Amministratore</h3>
 
                 <div style="display: flex; gap: 15px; align-items: center;">
-                    <!-- Bottone Modifica (Grigio stile Amazon) -->
+                    <!-- Bottone Modifica -->
                     <a th:href="@{/admin/files/{id}/edit(id=${file.id})}"
                         style="text-decoration: none; background-color: #F0F2F2; color: #0F1111; padding: 8px 16px; border-radius: 8px; border: 1px solid #D5D9D9; font-size: 14px; box-shadow: 0 2px 5px rgba(213,217,217,0.5);">
                         ✏️ Modifica file
                     </a>
 
-                    <!-- Bottone Elimina (Bordo Rosso) -->
+                    <!-- Bottone Elimina -->
                     <form th:action="@{'/admin/files/' + ${file.id} + '/delete' }" method="POST" style="margin: 0;">
                         <button type="submit"
                             onclick="return confirm('Sei sicuro di voler eliminare definitivamente questo file?')"
@@ -61,13 +75,12 @@
                 </div>
             </div>
 
-            <!-- 1. Il contenitore vuoto per React -->
-            <!-- Usiamo data-file-id per passare l'ID del modello da Thymeleaf a React -->
+            <!-- Contenitore per le recensioni React -->
             <div id="react-reviews-root" th:attr="data-file-id=${file.id}" style="margin-top: 40px;"></div>
 
             <!-- Link per tornare indietro -->
-            <div>
-                <a href="/files"
+            <div style="margin-top: 25px;">
+                <a th:href="@{/files}"
                     style="text-decoration: none; color: #007185; font-size: 14px; font-weight: bold;">&larr; Torna
                     all'elenco dei file</a>
             </div>

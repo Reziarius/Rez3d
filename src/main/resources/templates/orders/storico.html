@@ -11,7 +11,14 @@
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <main style="max-width: 900px; margin: 40px auto; padding: 20px;">
-        <h2>Storico Ordini</h2>
+        <!-- Pulsante Torna Indietro -->
+        <div style="margin-bottom: 20px;">
+            <a th:href="@{/}" style="text-decoration: none; color: #007185; font-weight: bold; font-size: 15px; display: inline-flex; align-items: center; gap: 5px;">
+                &larr; Torna alla Home
+            </a>
+        </div>
+
+        <h2>I Miei Ordini</h2>
 
         <!-- Messaggio se non ci sono ordini -->
         <div th:if="${#lists.isEmpty(ordini)}" style="padding: 20px; background-color: #f8f9fa; border-radius: 8px;">
@@ -35,7 +42,7 @@
                     <!-- ID cliccabile che porta al dettaglio -->
                     <td style="padding: 12px;">
                         <a th:href="@{/storico/{id}(id=${ordine.id})}"
-                            style="color: #007bff; text-decoration: none; font-weight: bold;">
+                            style="color: #007185; text-decoration: none; font-weight: bold;">
                             #<span th:text="${ordine.id}"></span>
                         </a>
                     </td>
@@ -44,8 +51,7 @@
                     <td style="padding: 12px;" th:text="${ordine.citta} + ' (' + ${ordine.cap} + ')'">Milano (20100)
                     </td>
 
-                    <!-- Soluzione infallibile per lo Stato: stampa direttamente il valore dell'enum -->
-                    <td style="padding: 12px; font-weight: bold;" th:text="${ordine.state}">STATO_ORDINE</td>>
+                    <td style="padding: 12px; font-weight: bold;" th:text="${ordine.state}">STATO_ORDINE</td>
                 </tr>
             </tbody>
         </table>

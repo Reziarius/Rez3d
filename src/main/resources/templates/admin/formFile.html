@@ -12,8 +12,14 @@
 
     <!-- Container ridotto a 600px per rendere il form compatto e centrato -->
     <main style="max-width: 600px; margin: 40px auto; padding: 0 20px;">
+        <!-- Pulsante Torna Indietro -->
+        <div style="margin-bottom: 20px;">
+            <a th:href="@{/files}" style="text-decoration: none; color: #007185; font-weight: bold; font-size: 15px; display: inline-flex; align-items: center; gap: 5px;">
+                &larr; Torna al Catalogo
+            </a>
+        </div>
         
-        <h1 th:text="${file.id != null ? 'Modifica file' : 'Nuovo file'}" style="color: #0F1111; margin-bottom: 25px; font-size: 28px; text-align: center;">
+        <h1 th:text="${file.id != null ? 'Modifica file 3D' : 'Nuovo file 3D'}" style="color: #0F1111; margin-bottom: 25px; font-size: 28px; text-align: center;">
             Gestione file
         </h1>
 
@@ -69,7 +75,7 @@
 
         <!-- Link di ritorno -->
         <div style="text-align: center; margin-top: 25px;">
-            <a href="/files" style="color: #007185; text-decoration: none; font-size: 14px; font-weight: bold;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
+            <a th:href="@{/files}" style="color: #007185; text-decoration: none; font-size: 14px; font-weight: bold;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
                 ← Annulla e Torna all'elenco dei File
             </a>
         </div>

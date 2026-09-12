@@ -12,14 +12,21 @@
     
     <main style="max-width: 1200px; margin: 30px auto; padding: 0 20px;">
         
+        <!-- Pulsante Torna Indietro -->
+        <div style="margin-bottom: 20px;">
+            <a th:href="@{/}" style="text-decoration: none; color: #007185; font-weight: bold; font-size: 15px; display: inline-flex; align-items: center; gap: 5px;">
+                &larr; Torna alla Home
+            </a>
+        </div>
+
         <!-- Intestazione e Bottone Admin -->
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px;">
-            <h1 style="margin: 0; font-size: 28px; color: #0F1111;">Catalogo Modelli</h1>
+            <h1 style="margin: 0; font-size: 28px; color: #0F1111;">Catalogo Modelli 3D</h1>
             
             <div th:if="${isAdmin}">
-                <a href="/admin/files/new" style="text-decoration: none;">
+                <a th:href="@{/admin/files/new}" style="text-decoration: none;">
                     <button style="background-color: #007185; color: white; padding: 10px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 14px; font-weight: bold; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
-                        + Crea nuovo file
+                        + Crea nuovo file 3D
                     </button>
                 </a>
             </div>

@@ -11,6 +11,13 @@
     <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <main style="max-width: 1200px; margin: 40px auto; padding: 0 20px;">
+        <!-- Pulsante Torna Indietro -->
+        <div style="margin-bottom: 20px;">
+            <a th:href="@{/}" style="text-decoration: none; color: #007185; font-weight: bold; font-size: 15px; display: inline-flex; align-items: center; gap: 5px;">
+                &larr; Torna alla Home
+            </a>
+        </div>
+
         <h1 style="color: #0F1111; margin-bottom: 30px;">Dashboard Ordini Ricevuti</h1>
 
         <div th:if="${ordini == null || ordini.isEmpty()}"
