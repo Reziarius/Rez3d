@@ -1,27 +1,25 @@
 package it.uniroma3.it.rez3d.controller;
 
-import it.uniroma3.it.rez3d.service.OrderLineService;
 import java.security.Principal;
 import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import it.uniroma3.it.rez3d.model.Order;
 import it.uniroma3.it.rez3d.model.OrderLine;
 import it.uniroma3.it.rez3d.model.PrintFile;
 import it.uniroma3.it.rez3d.model.RealProduct;
 import it.uniroma3.it.rez3d.model.User;
+import it.uniroma3.it.rez3d.service.OrderLineService;
 import it.uniroma3.it.rez3d.service.OrderService;
 import it.uniroma3.it.rez3d.service.PrintFileService;
 import it.uniroma3.it.rez3d.service.RealProductService;
 import it.uniroma3.it.rez3d.service.UserService;
-
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RealProductController {
@@ -65,28 +63,33 @@ public class RealProductController {
         }
 
         PrintFile file = optionalFile.get();
-        String username = principal.getName();
-        User loggedUser = userService.findByUsername(username);
-
+        User loggedUser = userService.findByUsername(principal.getName());
         if (loggedUser == null) {
             return "redirect:/login";
         }
 
-        // recuperiamo carrello
+        // Assicuriamo valori validi per le opzioni di personalizzazione
+        if (product.getSize() == null || product.getSize().trim().isEmpty()) {
+            product.setSize("Piccola");
+        }
+        if (product.getDipinto() == null) {
+            product.setDipinto(false);
+        }
+        if (product.getQuantity() < 1) {
+            product.setQuantity(1);
+        }
+
+        // recuperiamo il carrello dell'utente
         Order carrello = orderService.getOrCreateCart(loggedUser);
 
         boolean prodottoTrovato = false;
         if (carrello.getItems() != null) {
-            // scorriamo tutte le righe per fare il check
             for (OrderLine line : carrello.getItems()) {
                 RealProduct prodottoEsistente = line.getProduct();
-                // check
                 if (prodottoEsistente != null && prodottoEsistente.getFile() != null &&
                         prodottoEsistente.getFile().getId().equals(file.getId()) &&
                         java.util.Objects.equals(prodottoEsistente.getSize(), product.getSize()) &&
                         java.util.Objects.equals(prodottoEsistente.getDipinto(), product.getDipinto())) {
-                    // se trovi che c'è già un prodotto identico nel carrello allora aumenti
-                    // soltanto la quantita di quella orderLine
                     line.setQuantity(line.getQuantity() + 1);
                     orderLineService.save(line);
                     prodottoTrovato = true;
@@ -96,17 +99,13 @@ public class RealProductController {
         }
         if (!prodottoTrovato) {
             realProductService.creaProdotto(product, file);
-            // creiamo una nuova orderline
             OrderLine line = new OrderLine();
             line.setOrder(carrello);
-            // collego il prodotto alla riga
             line.setProduct(product);
             line.setQuantity(1);
-
             orderLineService.save(line);
         }
         
         return "redirect:/cart";
     }
-
 }

@@ -1,32 +1,29 @@
 package it.uniroma3.it.rez3d.controller;
 
-import it.uniroma3.it.rez3d.service.OrderLineService;
 import java.security.Principal;
-import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import it.uniroma3.it.rez3d.model.Order;
 import it.uniroma3.it.rez3d.model.OrderLine;
 import it.uniroma3.it.rez3d.model.OrderState;
 import it.uniroma3.it.rez3d.model.User;
+import it.uniroma3.it.rez3d.service.OrderLineService;
 import it.uniroma3.it.rez3d.service.OrderService;
 import it.uniroma3.it.rez3d.service.UserService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-
 
 @Controller 
-public class CartController{
+public class CartController {
     private final OrderLineService orderLineService;
     private final OrderService orderService;
     private final UserService userService;
 
-    public CartController(OrderService orderService, UserService userService, OrderLineService orderLineService){
+    public CartController(OrderService orderService, UserService userService, OrderLineService orderLineService) {
         this.orderService = orderService;
         this.userService = userService;
         this.orderLineService = orderLineService;
@@ -34,23 +31,29 @@ public class CartController{
 
     @GetMapping("/cart")
     public String mostraCarrello(Model model, Principal principal) {
-        String username = principal.getName();
-        User utente = userService.findByUsername(username);
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        User utente = userService.findByUsername(principal.getName());
+        if (utente == null) {
+            return "redirect:/login";
+        }
 
         Order carrello = orderService.getOrCreateCart(utente);
         float totale = 0.0f;
 
-        if(carrello.getItems() != null){
-            for(OrderLine line : carrello.getItems()){
-                totale += line.getProduct().getFinalPrice() * line.getQuantity();
+        if (carrello.getItems() != null) {
+            for (OrderLine line : carrello.getItems()) {
+                if (line.getProduct() != null) {
+                    totale += line.getProduct().getFinalPrice() * line.getQuantity();
+                }
             }
         }
-        model.addAttribute("carrello",carrello);
-        model.addAttribute("lines",carrello.getItems());
-        model.addAttribute("totale",totale);
+        model.addAttribute("carrello", carrello);
+        model.addAttribute("lines", carrello.getItems());
+        model.addAttribute("totale", totale);
 
         return "cart/showCart";
-
     }
 
     @PostMapping("/cart/update/{lineId}")
@@ -58,12 +61,20 @@ public class CartController{
         if (principal == null) {
             return "redirect:/login";
         }
+        User utente = userService.findByUsername(principal.getName());
         OrderLine line = this.orderLineService.findById(lineId);
-        if (line != null && line.getOrder() != null && line.getOrder().getUser() != null 
-                && principal.getName().equals(line.getOrder().getUser().getUsername())  //verifichiamo che l'utente loggato sia il proprietario dell'ordine a cui appartiene la riga
+
+        if (line != null && line.getOrder() != null && line.getOrder().getUser() != null && utente != null 
+                && utente.getId().equals(line.getOrder().getUser().getId())
                 && OrderState.CART.equals(line.getOrder().getState())) {
             if (nuovaQuantità <= 0) {
+                Order carrello = line.getOrder();
+                if (carrello.getItems() != null) {
+                    carrello.getItems().remove(line);
+                }
+                line.setOrder(null);
                 orderLineService.deleteById(lineId);
+                orderService.save(carrello);
             } else {
                 line.setQuantity(nuovaQuantità);
                 orderLineService.save(line);
@@ -77,34 +88,46 @@ public class CartController{
         if (principal == null) {
             return "redirect:/login";
         }
+        User utente = userService.findByUsername(principal.getName());
+        System.out.println(principal.getName());
+        System.out.println(utente.getUsername());
+
         OrderLine line = this.orderLineService.findById(lineId);
-        if (line != null && line.getOrder() != null && line.getOrder().getUser() != null 
-                && principal.getName().equals(line.getOrder().getUser().getUsername()) 
+
+        if (line != null && line.getOrder() != null && line.getOrder().getUser() != null && utente != null 
+                && utente.getId().equals(line.getOrder().getUser().getId()) 
                 && OrderState.CART.equals(line.getOrder().getState())) {
+            Order carrello = line.getOrder();
+            if (carrello.getItems() != null) {
+                carrello.getItems().remove(line);
+            }
+            line.setOrder(null);
             orderLineService.deleteById(lineId);
+            orderService.save(carrello);
         }
         return "redirect:/cart";
     }
 
     @PostMapping("/checkout")
-    public String elaboraCheckout(@RequestParam("indirizzo") String indirizzo,@RequestParam("citta") String citta, @RequestParam("cap") String cap, Principal principal) {
-        String username = principal.getName();
-        User utente = userService.findByUsername(username);
+    public String elaboraCheckout(@RequestParam("indirizzo") String indirizzo, @RequestParam("citta") String citta, @RequestParam("cap") String cap, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        User utente = userService.findByUsername(principal.getName());
+        if (utente == null) {
+            return "redirect:/login";
+        }
         Order carrello = orderService.getOrCreateCart(utente);
         
-        if(carrello.getItems() == null || carrello.getItems().isEmpty()){
+        if (carrello.getItems() == null || carrello.getItems().isEmpty()) {
             return "redirect:/cart?error=empty";
         }
 
-        //salviamo dati di spedizione nell'ordine
         carrello.setIndirizzoSpedizione(indirizzo);
         carrello.setCitta(citta);
         carrello.setCap(cap);
-
-        //cambio STATO: il carrello diventa un ordine in lavorazione
         carrello.setState(OrderState.PENDING);
 
-        //salviamo l'ordine definitivo
         orderService.save(carrello);
         return "redirect:/successOrder";
     }
@@ -113,7 +136,4 @@ public class CartController{
     public String ordineCompletato() {
         return "cart/success";
     }
-    
-    
-    
 }

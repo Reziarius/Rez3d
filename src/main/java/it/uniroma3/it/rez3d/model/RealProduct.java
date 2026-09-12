@@ -19,13 +19,13 @@ public class RealProduct {
     private float finalPrice;
 
     @NotBlank(message = "Selezionare una dimensione")
-    private String size;
+    private String size = "Piccola";
 
     @NotNull(message = "Specificare la finitura")
-    private Boolean dipinto;
+    private Boolean dipinto = false;
 
     @Min(value = 1, message = "La quantità deve essere di almeno 1")
-    private int quantity;
+    private int quantity = 1;
 
     @ManyToOne
     private PrintFile file;

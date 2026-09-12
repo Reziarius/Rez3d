@@ -37,6 +37,9 @@ public class CredentialsService {
        if (credentials.getRole() == null) {
            credentials.setRole(Credentials.DEFAULT_ROLE);
        }
+       if (credentials.getUser() != null) {
+           credentials.getUser().setUsername(credentials.getUsername());
+       }
        credentials.setPassword(this.passwordEncoder.encode(credentials.getPassword()));
        return this.credentialsRepository.save(credentials);
     }
