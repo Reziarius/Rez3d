@@ -15,20 +15,20 @@
             </form>
         </div>
         <div th:unless="${userDetails}">
-            <a href="/login">Login</a>
+            <a th:href="@{/login}">Login</a>
         </div>
     </header>
 
     <main class="main-centered">
 
-        <h1>Registarzione nuovo utente</h1>
+        <h1>Registrazione nuovo utente</h1>
         <form class="auth-card" th:action="@{/register}" method="POST">
             <div>
                 <label>Nome</label>
                 <span>
                     <input type="text" placeholder="name" required th:field="${user.name}" />
                 </span>
-                <span th:if="${#fields.hasErrors('user.name')}" th:errors="${user.name}" th:style="'color:red"></span>
+                <span th:if="${#fields.hasErrors('user.name')}" th:errors="${user.name}" th:style="'color:red'"></span>
             </div>
 
             <div>
@@ -37,7 +37,7 @@
                     <input type="text" placeholder="surname" required th:field="${user.surname}" />
                 </span>
                 <span th:if="${#fields.hasErrors('user.surname')}" th:errors="${user.surname}"
-                    th:style="'color:red"></span>
+                    th:style="'color:red'"></span>
             </div>
 
             <div>
@@ -55,7 +55,7 @@
                     <input type="text" placeholder="username" required th:field="${credentials.username}" />
                 </span>
                 <span th:if="${#fields.hasErrors('credentials.username')}" th:errors="${credentials.username}"
-                    th:style="'color:red"></span>
+                    th:style="'color:red'"></span>
             </div>
 
             <div>
@@ -64,7 +64,7 @@
                     <input type="password" placeholder="password" required th:field="${credentials.password}" />
                 </span>
                 <span th:if="${#fields.hasErrors('credentials.password')}" th:errors="${credentials.password}"
-                    th:style="'color:red"></span>
+                    th:style="'color:red'"></span>
             </div>
             <div>
                 <button type="submit">Registrati</button>

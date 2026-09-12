@@ -52,6 +52,18 @@ public class User {
     public void setEmail(String email) {
         this.email = email;
     }
+    public String getUsername() {
+        return username;
+    }
+    public void setUsername(String username) {
+        this.username = username;
+    }
+    public List<Order> getOrders() {
+        return orders;
+    }
+    public void setOrders(List<Order> orders) {
+        this.orders = orders;
+    }
     @Override
     public int hashCode() {
         return (id == null) ? 0 : id.hashCode();
@@ -68,18 +80,7 @@ public class User {
             return false;
         return id.equals(other.id);
     }
-    public String getUsername() {
-        return username;
-    }
-    public void setUsername(String username) {
-        this.username = username;
-    }
-    public List<Order> getOrders() {
-        return orders;
-    }
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
+    
 
     
 }

@@ -15,7 +15,7 @@
 
     <main class="cart-container">
 
-        <h1 style="border-bottom: none; margin-bottom: 30px;">Carrello <span th:text="${carrello.items.size()}"></span>
+        <h1 style="border-bottom: none; margin-bottom: 30px;">Carrello <span th:text="${carrello.items != null ? carrello.items.size() : 0}"></span>
         </h1>
 
         <!-- Messaggio carrello vuoto -->
@@ -23,7 +23,7 @@
             <div style="font-size: 3rem; margin-bottom: 10px;">🛒</div>
             <h2>Il tuo carrello è vuoto</h2>
             <p style="color: var(--text-muted); margin-bottom: 20px;">Inizia a personalizzare i nostri modelli!</p>
-            <a href="/files" class="btn-action">Vai al Catalogo</a>
+            <a th:href="@{/files}" class="btn-action">Vai al Catalogo</a>
         </div>
 
         <!-- Lista prodotti (Stile Amazon) -->

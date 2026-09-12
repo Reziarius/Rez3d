@@ -30,7 +30,7 @@ public class RealProductService {
         if("Grande".equals(product.getSize()))
             prezzo += 10.0f;
 
-        if(product.getDipinto())
+        if (Boolean.TRUE.equals(product.getDipinto()))
             prezzo += 15.0f;
 
         product.setFinalPrice(prezzo);

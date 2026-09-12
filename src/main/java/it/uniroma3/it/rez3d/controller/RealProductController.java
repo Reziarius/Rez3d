@@ -2,6 +2,7 @@ package it.uniroma3.it.rez3d.controller;
 
 import it.uniroma3.it.rez3d.service.OrderLineService;
 import java.security.Principal;
+import java.util.Optional;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -39,28 +40,37 @@ public class RealProductController {
         this.orderLineService = orderLineService;
     }
 
-    @GetMapping("files/{id}/personalizza")
+    @GetMapping("/files/{id}/personalizza")
     public String formPersonalizzazione(@PathVariable Long id, Model model) {
-        RealProduct product = new RealProduct();
+        Optional<PrintFile> optionalFile = printFileService.findById(id);
+        if (optionalFile.isEmpty()) {
+            return "redirect:/files";
+        }
 
-        System.out.println("NUOVO PRODUCT = " + product);
-        System.out.println("NUOVO PRODUCT ID = " + product.getId());
-
-        PrintFile file = printFileService.findById(id).get();
-
-        model.addAttribute("file", file);
+        model.addAttribute("file", optionalFile.get());
         model.addAttribute("product", new RealProduct());
-        return "/products/formPersonalizzaProdotto";
+        return "products/formPersonalizzaProdotto";
     }
 
-    @PostMapping("files/{fileId}/personalizza")
+    @PostMapping("/files/{fileId}/personalizza")
     public String salvaProdottoPersonalizzato(@PathVariable("fileId") Long fileId,
                                             @ModelAttribute("product") RealProduct product,
                                             Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        Optional<PrintFile> optionalFile = printFileService.findById(fileId);
+        if (optionalFile.isEmpty()) {
+            return "redirect:/files";
+        }
 
+        PrintFile file = optionalFile.get();
         String username = principal.getName();
-        PrintFile file = printFileService.findById(fileId).get();
         User loggedUser = userService.findByUsername(username);
+
+        if (loggedUser == null) {
+            return "redirect:/login";
+        }
 
         // recuperiamo carrello
         Order carrello = orderService.getOrCreateCart(loggedUser);
@@ -71,9 +81,10 @@ public class RealProductController {
             for (OrderLine line : carrello.getItems()) {
                 RealProduct prodottoEsistente = line.getProduct();
                 // check
-                if (prodottoEsistente.getFile().getId().equals(file.getId()) &&
-                        prodottoEsistente.getSize().equals(product.getSize()) &&
-                        prodottoEsistente.getDipinto() == product.getDipinto()) {
+                if (prodottoEsistente != null && prodottoEsistente.getFile() != null &&
+                        prodottoEsistente.getFile().getId().equals(file.getId()) &&
+                        java.util.Objects.equals(prodottoEsistente.getSize(), product.getSize()) &&
+                        java.util.Objects.equals(prodottoEsistente.getDipinto(), product.getDipinto())) {
                     // se trovi che c'è già un prodotto identico nel carrello allora aumenti
                     // soltanto la quantita di quella orderLine
                     line.setQuantity(line.getQuantity() + 1);
@@ -85,7 +96,7 @@ public class RealProductController {
         }
         if (!prodottoTrovato) {
             realProductService.creaProdotto(product, file);
-            // creiamo una nuova ordeline
+            // creiamo una nuova orderline
             OrderLine line = new OrderLine();
             line.setOrder(carrello);
             // collego il prodotto alla riga
