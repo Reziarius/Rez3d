@@ -8,4 +8,5 @@ import it.uniroma3.it.rez3d.model.Credentials;
 @Repository
 public interface CredentialsRepository extends JpaRepository<Credentials,Long>{
     Credentials findByUsername(String username);
+    boolean existsByUsername(String username);
 }

@@ -48,12 +48,17 @@ public class AuthenticationController {
     public String registerUser(
                     @Valid @ModelAttribute("user") User user, BindingResult userBindingResult, 
                     @Valid @ModelAttribute("credentials") Credentials credentials, BindingResult credentialsBindingResult) {
-        //se va tutto bene (non ci sono errori ne in un user ne in credentials)
+        
+        if (credentialsService.existsByUsername(credentials.getUsername())) {
+            credentialsBindingResult.rejectValue("username", "duplicate", "Username già in uso da un altro utente.");
+        }
+
+        //se va tutto bene (non ci sono errori ne in user ne in credentials)
         if(!userBindingResult.hasErrors() && !credentialsBindingResult.hasErrors()){
             user.setUsername(credentials.getUsername());
             credentials.setUser(user);
             credentialsService.saveCredentials(credentials);
-            return "redirect:/";
+            return "redirect:/login?registered=true";
         }
         //se ci sono errori rimanda alla pagina di registrazione
         return "authentication/registerUser";
