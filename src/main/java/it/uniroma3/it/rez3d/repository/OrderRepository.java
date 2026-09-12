@@ -23,5 +23,7 @@ public interface OrderRepository extends JpaRepository<Order,Long> {
     boolean hasUserPurchasedFile(@Param("user") User user, @Param("file") PrintFile file);
 
     List<Order> findByStateNot(OrderState state);
-    
+    List<Order> findByState(OrderState state);
+    List<Order> findByUserAndStateNot(User user, OrderState state);
+    List<Order> findAllByUserAndState(User user, OrderState state);
 }

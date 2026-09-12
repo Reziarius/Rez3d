@@ -42,4 +42,9 @@ public class UserService {
         }
         return this.userRepository.findByUsername(username).orElse(null);
     }
+
+    @Transactional(readOnly = true)
+    public java.util.List<User> findAllSorted() {
+        return this.userRepository.findByOrderByUsernameAsc();
+    }
 }

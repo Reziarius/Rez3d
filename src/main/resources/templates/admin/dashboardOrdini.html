@@ -18,11 +18,54 @@
             </a>
         </div>
 
-        <h1 style="color: #0F1111; margin-bottom: 30px;">Dashboard Ordini Ricevuti</h1>
+        <h1 style="color: #0F1111; margin-bottom: 25px;">Dashboard Ordini Ricevuti</h1>
+
+        <!-- Pannello Filtri Ordini Admin -->
+        <div style="background: white; border: 1px solid #ddd; border-radius: 8px; padding: 20px; margin-bottom: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.05);">
+            <form th:action="@{/admin/orders}" method="GET" style="display: flex; gap: 20px; align-items: flex-end; flex-wrap: wrap;">
+                
+                <!-- Filtro Stato -->
+                <div style="display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 200px;">
+                    <label style="font-weight: bold; color: #0F1111; font-size: 14px;">Stato Ordine:</label>
+                    <select name="state" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
+                        <option value="" th:selected="${selectedState == null}">-- Tutti gli stati --</option>
+                        <option value="PENDING" th:selected="${selectedState != null && selectedState.name() == 'PENDING'}">In Lavorazione (PENDING)</option>
+                        <option value="SPEDITO" th:selected="${selectedState != null && selectedState.name() == 'SPEDITO'}">Spedito (SPEDITO)</option>
+                        <option value="COMPLETATO" th:selected="${selectedState != null && selectedState.name() == 'COMPLETATO'}">Completato (COMPLETATO)</option>
+                        <option value="ANNULLATO" th:selected="${selectedState != null && selectedState.name() == 'ANNULLATO'}">Annullato (ANNULLATO)</option>
+                    </select>
+                </div>
+
+                <!-- Filtro Cliente (Ordinato alfabeticamente) -->
+                <div style="display: flex; flex-direction: column; gap: 5px; flex: 1; min-width: 200px;">
+                    <label style="font-weight: bold; color: #0F1111; font-size: 14px;">Cliente (Ordinati A-Z):</label>
+                    <select name="userId" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
+                        <option value="" th:selected="${selectedUserId == null}">-- Tutti i clienti --</option>
+                        <option th:each="u : ${utenti}" 
+                                th:value="${u.id}" 
+                                th:text="${u.username != null ? u.username : (u.name + ' ' + u.surname)}" 
+                                th:selected="${selectedUserId != null && selectedUserId == u.id}">
+                            Username
+                        </option>
+                    </select>
+                </div>
+
+                <!-- Bottoni Azione -->
+                <div style="display: flex; gap: 10px;">
+                    <button type="submit" style="background-color: #007185; color: white; border: none; padding: 9px 20px; border-radius: 4px; font-weight: bold; cursor: pointer;">
+                        🔍 Filtra
+                    </button>
+                    <a th:href="@{/admin/orders}" style="text-decoration: none; background-color: #f0f2f2; color: #0f1111; border: 1px solid #d5d9d9; padding: 8px 16px; border-radius: 4px; font-size: 14px; font-weight: bold; display: inline-flex; align-items: center;">
+                        ← Azzera Filtri
+                    </a>
+                </div>
+            </form>
+        </div>
 
         <div th:if="${ordini == null || ordini.isEmpty()}"
             style="background: white; padding: 40px; text-align: center; border-radius: 8px; border: 1px solid #ddd;">
-            <h3>Nessun ordine presente al momento.</h3>
+            <h3>Nessun ordine trovato con i criteri selezionati.</h3>
+            <a th:href="@{/admin/orders}" style="color: #007185; text-decoration: none; font-weight: bold;">← Mostra tutti gli ordini</a>
         </div>
 
         <div th:if="${ordini != null && !ordini.isEmpty()}" style="display: flex; flex-direction: column; gap: 20px;">
@@ -54,7 +97,9 @@
                                 <span th:text="${item.product.file.name}">Nome Prodotto</span>
                                 <span th:if="${item.product.dipinto}"
                                     style="font-size: 12px; background: #FFD814; padding: 2px 5px; border-radius: 3px; margin-left: 5px;">Dipinto
-                                    a mano</span>
+                                    a mano
+                                </span>
+                                <span th:text="${item.product.size}"style="font-weight: bold; padding: 5px 3px">Scala prodotto</span>
                             </span>
                             <span style="font-weight: bold;">€ <span
                                     th:text="${item.product.finalPrice * item.quantity}">0.00</span></span>

@@ -64,4 +64,18 @@ public class OrderService {
         List<Order> result = this.orderRepository.findByUser(user);
         return result;
     }
+
+    @Transactional
+    public List<Order> getOrdiniFiltrati(OrderState state, User user) {
+        if (state == null && user == null) {
+            return getOrdiniRicevuti();
+        }
+        if (state != null && user == null) {
+            return orderRepository.findByState(state);
+        }
+        if (state == null && user != null) {
+            return orderRepository.findByUserAndStateNot(user, OrderState.CART);
+        }
+        return orderRepository.findAllByUserAndState(user, state);
+    }
 }
