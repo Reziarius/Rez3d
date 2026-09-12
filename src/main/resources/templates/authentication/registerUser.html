@@ -7,17 +7,7 @@
 </head>
 
 <body>
-    <header>
-        <div th:if="${userDetails}">
-            <span th:text="${userDetails.username}"></span>
-            <form th:action="@{/logout}" method="POST" style="display:inline;">
-                <button type="submit">Logout</button>
-            </form>
-        </div>
-        <div th:unless="${userDetails}">
-            <a th:href="@{/login}">Login</a>
-        </div>
-    </header>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <main class="main-centered">
 

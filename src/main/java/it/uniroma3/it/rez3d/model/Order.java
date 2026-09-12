@@ -27,7 +27,16 @@ public class Order {
     private String indirizzoSpedizione;
     private String citta;
     private String cap;
+    
+    @Enumerated(EnumType.STRING)
+    private OrderState state;
 
+    @ManyToOne
+    private User user;
+
+    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<OrderLine> items;
+    
     public String getIndirizzoSpedizione() {
         return indirizzoSpedizione;
     }
@@ -52,14 +61,7 @@ public class Order {
         this.cap = cap;
     }
 
-    @Enumerated(EnumType.STRING)
-    private OrderState state;
 
-    @ManyToOne
-    private User user;
-
-    @OneToMany(mappedBy = "order", cascade = CascadeType.REMOVE, orphanRemoval = true)
-    private List<OrderLine> items;
 
     public Long getId() {
         return id;

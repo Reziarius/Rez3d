@@ -1,8 +1,11 @@
 package it.uniroma3.it.rez3d.model;
 
 public enum OrderState {
+    CART,
     PENDING,
     CONFIRMED,
-    CANCELLED,
-    CART
+    SPEDITO,
+    COMPLETATO,
+    ANNULLATO,
+    CANCELLED
 }

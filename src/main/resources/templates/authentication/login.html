@@ -9,27 +9,7 @@
 <body>
 
     <!-- NAVBAR -->
-    <header class="navbar">
-        <div class="navbar-container">
-            <a href="/">
-                <div class="nav-brand">Rez<span>3D</span></div>
-            </a>
-            
-            <div class="nav-actions">
-                <div th:if="${userDetails}" style="display: flex; gap: 15px; align-items: center;"> 
-                    <span th:text="${userDetails.username}" style="color: white; font-weight: bold;"></span>
-                    <!-- Questo form prende l'eccezione .form-logout nel CSS -->
-                    <form th:action="@{/logout}" method="POST" class="form-logout">
-                        <button type="submit" class="btn-logout">Logout</button>
-                    </form>
-                </div>
-                
-                <div th:unless="${userDetails}">
-                    <a href="/login">Login</a>
-                </div>
-            </div>
-        </div>
-    </header>
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
 
     <!-- MAIN CENTRATO -->
     <main class="main-centered">
