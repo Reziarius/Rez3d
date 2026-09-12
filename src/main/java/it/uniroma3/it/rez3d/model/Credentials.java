@@ -10,6 +10,9 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToOne;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 @Entity
 public class Credentials {
     public static final String DEFAULT_ROLE = "DEFAULT";
@@ -17,11 +20,18 @@ public class Credentials {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    
+    @NotBlank(message = "Lo username è obbligatorio")
+    @Size(min = 3, max = 20, message = "Lo username deve contenere tra 3 e 20 caratteri")
     @Column(nullable = false, unique = true)
     private String username;
+    
+    @NotBlank(message = "La password è obbligatoria")
+    @Size(min = 4, message = "La password deve contenere almeno 4 caratteri")
     @JsonIgnore
     @Column(nullable = false, unique = false)
     private String password;
+    
     private String role;
     @OneToOne(cascade = CascadeType.ALL)
     private User user;

@@ -6,15 +6,27 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
 
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 @Entity
 public class RealProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private float finalPrice;
+
+    @NotBlank(message = "Selezionare una dimensione")
     private String size;
+
+    @NotNull(message = "Specificare la finitura")
     private Boolean dipinto;
+
+    @Min(value = 1, message = "La quantità deve essere di almeno 1")
     private int quantity;
+
     @ManyToOne
     private PrintFile file;
 

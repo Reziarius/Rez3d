@@ -14,6 +14,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+import jakarta.validation.constraints.NotNull;
+
 @Entity 
 @Table(name="orders")
 public class Order {
@@ -21,13 +23,14 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    
+    @NotNull(message = "La data dell'ordine è obbligatoria")
     private LocalDate date;
 
     private String indirizzoSpedizione;
     private String citta;
     private String cap;
     
+    @NotNull(message = "Lo stato dell'ordine è obbligatorio")
     @Enumerated(EnumType.STRING)
     private OrderState state;
 

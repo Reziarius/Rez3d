@@ -8,16 +8,35 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 @Entity
 public class PrintFile {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotBlank(message = "Il nome del modello è obbligatorio")
+    @Size(max = 100, message = "Il nome non può superare 100 caratteri")
     private String name;
+
+    @NotBlank(message = "Il nome dell'artista è obbligatorio")
     private String artist;
+
+    @NotNull(message = "Il prezzo è obbligatorio")
+    @DecimalMin(value = "0.0", message = "Il prezzo non può essere negativo")
     private float price;
+
+    @NotBlank(message = "La descrizione è obbligatoria")
+    @Size(max = 2000, message = "La descrizione non può superare 2000 caratteri")
     private String description;
+
+    @NotBlank(message = "La categoria è obbligatoria")
     private String category;
+
     private String image;
 
     @OneToMany(mappedBy = "file")

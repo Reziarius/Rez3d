@@ -10,6 +10,10 @@ import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+
 @Entity
 @Table(name="users") 
 public class User {
@@ -17,11 +21,18 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     
+    @NotBlank(message = "Il nome è obbligatorio")
+    @Size(max = 50, message = "Il nome non può superare 50 caratteri")
     private String name;
+    
+    @NotBlank(message = "Il cognome è obbligatorio")
+    @Size(max = 50, message = "Il cognome non può superare 50 caratteri")
     private String surname;
     
     private String username;
 
+    @NotBlank(message = "L'email è obbligatoria")
+    @Email(message = "Inserisci un indirizzo email valido")
     @Column(nullable = false, unique = true)
     private String email;
 

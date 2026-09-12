@@ -16,15 +16,15 @@ public class Review {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotBlank 
+    @NotBlank(message = "Il titolo della recensione è obbligatorio") 
     private String title;
 
-    @NotBlank 
+    @NotBlank(message = "Il testo della recensione è obbligatorio") 
     private String text;
 
-    @NotNull 
-    @Min(1)
-    @Max(5)
+    @NotNull(message = "Il voto è obbligatorio") 
+    @Min(value = 1, message = "Il voto minimo è 1")
+    @Max(value = 5, message = "Il voto massimo è 5")
     private Integer rating;
 
     @ManyToOne
