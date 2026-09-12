@@ -3,6 +3,7 @@ import javax.sql.DataSource;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -44,15 +45,15 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            // Disabilitiamo temporaneamente il CSRF (ci eviterà errori strani quando testerai i form di inserimento)
-            .csrf(csrf -> csrf.disable()) 
             
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/css/**","/images/**","/models/**","/register","/login").permitAll()
                 
                 .requestMatchers("/admin/**").hasAuthority(Credentials.ADMIN_ROLE)
 
-                .requestMatchers("/cart","/files/*/personalizza","/storico","/storico/*").authenticated() 
+                .requestMatchers("/cart/**","/files/*/personalizza","/storico","/storico/*","/checkout","/orders","/orderLines").authenticated() 
+
+                .requestMatchers(HttpMethod.POST,"/api/**").authenticated()
                 
                 // 2. Diciamo a Spring che TUTTO il resto del sito è PUBBLICO!
                 .anyRequest().permitAll() 

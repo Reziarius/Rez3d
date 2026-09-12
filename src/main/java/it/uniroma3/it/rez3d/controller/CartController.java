@@ -54,14 +54,17 @@ public class CartController{
     }
 
     @PostMapping("/cart/update/{lineId}")
-    public String aggiornaQuantità(@PathVariable("lineId") Long lineId,@RequestParam("quantity") int nuovaQuantità) {
+    public String aggiornaQuantità(@PathVariable("lineId") Long lineId, @RequestParam("quantity") int nuovaQuantità, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
         OrderLine line = this.orderLineService.findById(lineId);
-
-        if(line!=null){
-            if(nuovaQuantità<=0){
+        if (line != null && line.getOrder() != null && line.getOrder().getUser() != null 
+                && principal.getName().equals(line.getOrder().getUser().getUsername()) 
+                && OrderState.CART.equals(line.getOrder().getState())) {
+            if (nuovaQuantità <= 0) {
                 orderLineService.deleteById(lineId);
-            }
-            else{
+            } else {
                 line.setQuantity(nuovaQuantità);
                 orderLineService.save(line);
             }
@@ -70,8 +73,16 @@ public class CartController{
     }
     
     @PostMapping("/cart/remove/{lineId}")
-    public String aggiornaQuantità(@PathVariable("lineId") Long lineId) {
-        orderLineService.deleteById(lineId);
+    public String rimuoviElemento(@PathVariable("lineId") Long lineId, Principal principal) {
+        if (principal == null) {
+            return "redirect:/login";
+        }
+        OrderLine line = this.orderLineService.findById(lineId);
+        if (line != null && line.getOrder() != null && line.getOrder().getUser() != null 
+                && principal.getName().equals(line.getOrder().getUser().getUsername()) 
+                && OrderState.CART.equals(line.getOrder().getState())) {
+            orderLineService.deleteById(lineId);
+        }
         return "redirect:/cart";
     }
 
