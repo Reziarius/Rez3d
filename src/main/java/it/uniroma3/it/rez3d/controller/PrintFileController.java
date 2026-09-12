@@ -35,7 +35,7 @@ public class PrintFileController {
         return "files/listFile";
     }
 
-    @GetMapping("files/{id}")
+    @GetMapping("/files/{id}")
     public String show(@PathVariable("id") Long id, Model model) {
         Optional<PrintFile> optional = this.printFileService.findById(id);
         if(optional.isEmpty()){

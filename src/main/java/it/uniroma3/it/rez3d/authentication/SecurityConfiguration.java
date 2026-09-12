@@ -49,11 +49,11 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/css/**","/images/**","/models/**","/register","/login").permitAll()
                 
-                .requestMatchers("/admin/**").hasAuthority(Credentials.ADMIN_ROLE)
+                .requestMatchers("/admin/**", "/orders", "/orderLines").hasAuthority(Credentials.ADMIN_ROLE)
 
-                .requestMatchers("/cart/**","/files/*/personalizza","/storico","/storico/*","/checkout","/orders","/orderLines").authenticated() 
+                .requestMatchers("/cart/**", "/files/*/personalizza", "/storico", "/storico/*", "/checkout").authenticated() 
 
-                .requestMatchers(HttpMethod.POST,"/api/**").authenticated()
+                .requestMatchers(HttpMethod.POST, "/api/**").authenticated()
                 
                 // 2. Diciamo a Spring che TUTTO il resto del sito è PUBBLICO!
                 .anyRequest().permitAll() 

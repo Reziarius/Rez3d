@@ -103,42 +103,19 @@ public class Order {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result + ((date == null) ? 0 : date.hashCode());
-        result = prime * result + ((state == null) ? 0 : state.hashCode());
-        result = prime * result + ((user == null) ? 0 : user.hashCode());
-        result = prime * result + ((items == null) ? 0 : items.hashCode());
-        return result;
+        return (id == null) ? 0 : id.hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
+        if (obj == null || getClass() != obj.getClass())
             return false;
         Order other = (Order) obj;
-        if (date == null) {
-            if (other.date != null)
-                return false;
-        } else if (!date.equals(other.date))
+        if (id == null || other.id == null)
             return false;
-        if (state != other.state)
-            return false;
-        if (user == null) {
-            if (other.user != null)
-                return false;
-        } else if (!user.equals(other.user))
-            return false;
-        if (items == null) {
-            if (other.items != null)
-                return false;
-        } else if (!items.equals(other.items))
-            return false;
-        return true;
+        return id.equals(other.id);
     }
 
     

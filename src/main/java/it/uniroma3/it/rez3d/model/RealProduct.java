@@ -16,10 +16,7 @@ public class RealProduct {
     private Boolean dipinto;
     private int quantity;
     @ManyToOne
-    private Order order;
-    @ManyToOne
     private PrintFile file;
-    
 
     public Long getId() {
         return id;
@@ -61,16 +58,6 @@ public class RealProduct {
         this.quantity = quantity;
     }
 
-    
-    public Order getOrder() {
-        return order;
-    }
-
-    public void setOrder(Order order) {
-        this.order = order;
-    }
-
-    
     public PrintFile getFile() {
         return file;
     }
