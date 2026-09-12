@@ -1,8 +1,6 @@
 package it.uniroma3.it.rez3d.service;
 
 import org.springframework.stereotype.Service;
-
-import it.uniroma3.it.rez3d.controller.OrderLineController;
 import it.uniroma3.it.rez3d.model.OrderLine;
 import it.uniroma3.it.rez3d.repository.OrderLineRepository;
 

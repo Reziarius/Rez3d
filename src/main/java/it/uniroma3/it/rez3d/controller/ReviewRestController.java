@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import jakarta.validation.Valid;
 
 
 
@@ -58,7 +59,7 @@ public class ReviewRestController {
     }
 
     @PostMapping
-    public ResponseEntity<?> addReview(@PathVariable("fileId") Long fileId,@RequestBody Review newReview, Principal principal) {
+    public ResponseEntity<?> addReview(@PathVariable("fileId") Long fileId,@Valid @RequestBody Review newReview, Principal principal) {
         //TODO: process POST request
         if(principal == null){
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Devi effettuare il login per recensire");

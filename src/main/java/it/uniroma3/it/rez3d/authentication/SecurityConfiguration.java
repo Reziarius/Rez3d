@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
+import it.uniroma3.it.rez3d.model.Credentials;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration {
@@ -46,10 +48,9 @@ public class SecurityConfiguration {
             .csrf(csrf -> csrf.disable()) 
             
             .authorizeHttpRequests(auth -> auth
-                //tutti possono caricare il CSS, le immagin 
                 .requestMatchers("/css/**","/images/**","/models/**","/register","/login").permitAll()
-                // 1. Diciamo a Spring che l'area ADMIN è blindata
-                .requestMatchers("/admin/**").authenticated() 
+                
+                .requestMatchers("/admin/**").hasAuthority(Credentials.ADMIN_ROLE)
 
                 .requestMatchers("/cart","/files/*/personalizza","/storico","/storico/*").authenticated() 
                 

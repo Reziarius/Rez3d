@@ -11,6 +11,9 @@ import it.uniroma3.it.rez3d.service.OrderLineService;
 @Controller
 public class OrderLineController {
     private OrderLineService orderLineService;
+    public OrderLineController(OrderLineService orderLineService){
+        this.orderLineService = orderLineService;
+    }
 
     @GetMapping("/orderLines")
     public String getOrderLines(Model model) {

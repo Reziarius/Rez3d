@@ -77,7 +77,6 @@ public class CartController{
 
     @PostMapping("/checkout")
     public String elaboraCheckout(@RequestParam("indirizzo") String indirizzo,@RequestParam("citta") String citta, @RequestParam("cap") String cap, Principal principal) {
-        //TODO: process POST request
         String username = principal.getName();
         User utente = userService.findByUsername(username);
         Order carrello = orderService.getOrCreateCart(utente);
