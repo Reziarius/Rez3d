@@ -16,8 +16,32 @@ import jakarta.persistence.Table;
 
 import jakarta.validation.constraints.NotNull;
 
+import jakarta.persistence.NamedEntityGraph;
+import jakarta.persistence.NamedAttributeNode;
+import jakarta.persistence.NamedSubgraph;
+
 @Entity 
 @Table(name="orders")
+@NamedEntityGraph(
+    name = "Order.withDetails",
+    attributeNodes = {
+        @NamedAttributeNode(value = "items", subgraph = "items-subgraph")
+    },
+    subgraphs = {
+        @NamedSubgraph(
+            name = "items-subgraph",
+            attributeNodes = {
+                @NamedAttributeNode(value = "product", subgraph = "product-subgraph")
+            }
+        ),
+        @NamedSubgraph(
+            name = "product-subgraph",
+            attributeNodes = {
+                @NamedAttributeNode(value = "file")
+            }
+        )
+    }
+)
 public class Order {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

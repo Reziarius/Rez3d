@@ -4,7 +4,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import it.uniroma3.it.rez3d.model.Order;
@@ -15,8 +14,12 @@ import jakarta.transaction.Transactional;
 
 @Service
 public class OrderService {
-    @Autowired
-    private OrderRepository orderRepository;
+    
+    private final OrderRepository orderRepository;
+
+    public OrderService(OrderRepository orderRepository){
+        this.orderRepository = orderRepository;
+    }
 
     @Transactional 
     public Order getOrCreateCart(User user){

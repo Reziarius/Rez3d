@@ -20,7 +20,7 @@ public class ReviewService {
         this.reviewRepository = reviewRepository;
         this.orderRepository = orderRepository;
     }
-    
+    @Transactional 
     public List<Review> getReviewsByFile(PrintFile file) {
         return reviewRepository.findByFile(file);
     }
